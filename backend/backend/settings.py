@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Cuisines',
+        'NAME': 'Cuisines_django',
         'USER' : 'root',
         'PASSWORD' : '',
         'HOST' : 'localhost',
