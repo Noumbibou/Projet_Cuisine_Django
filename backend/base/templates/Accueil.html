@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Accueil - Cuisine Gourmet{% endblock %}
+{% block hero %}
+<section id="accueil" class="hero-section">
+    <div class="hero-content">
+        <h1 class="display-1 fw-bold">Découvrez l'Art Culinaire</h1>
+        <p class="lead">Des saveurs authentiques, une expérience inoubliable</p>
+        <a href="{% url 'base:menu_list'%}" class="btn btn-primary btn-lg">Découvrir nos menus</a>
+    </div>
+</section>
+{% endblock %}

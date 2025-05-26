@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+{% block title %}Connexion - Cuisine Gourmet{% endblock %}
+{% block content %}
+<style>
+:root {
+    --primary-color: #38b2ac;
+    --secondary-color: #4f8cff;
+    --cream-color: #f8fafc;
+    --text-color: #495057;
+}
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 0;
+    background: var(--cream-color);
+}
+.auth-container {
+    max-width: 420px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 2.2rem 2rem 2rem 2rem;
+    background: #fff;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+}
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+.auth-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    letter-spacing: 0.03em;
+}
+.auth-header p {
+    color: var(--text-color);
+    font-size: 1.05rem;
+}
+.nav-tabs {
+    border: none;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    background: none;
+}
+.nav-tabs .nav-link {
+    border: none;
+    color: var(--primary-color) !important;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    background: none;
+    transition: all 0.3s;
+}
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    background: transparent;
+}
+.form-floating {
+    margin-bottom: 1.3rem;
+    position: relative;
+}
+.form-floating > .form-control {
+    height: calc(3.1rem + 2px);
+    padding: 1.3rem 0.75rem 0.6rem;
+    border: 1.2px solid #ced4da;
+    border-radius: 0.7rem;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+.form-floating > .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.15rem #38b2ac33;
+}
+.form-floating > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    color: var(--text-color);
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: all 0.2s;
+}
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    color: var(--primary-color);
+    background: #fff;
+    padding: 0 0.5rem;
+    height: fit-content;
+}
+.password-toggle {
+    position: relative;
+}
+.password-toggle .toggle-password {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #b0b0b0;
+    z-index: 5;
+    font-size: 1.15rem;
+    transition: color 0.2s;
+}
+.password-toggle .toggle-password.active {
+    color: var(--primary-color);
+}
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.15rem #38b2ac33;
+}
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 0.7rem;
+    padding: 0.7rem 0;
+    width: 100%;
+    box-shadow: 0 2px 8px #38b2ac22;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+    background: linear-gradient(90deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+}
+.alert {
+    border-radius: 0.7rem;
+    margin: 1rem 0;
+    font-size: 0.97rem;
+    animation: fadeIn 0.3s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+@media (max-width: 600px) {
+    .auth-container { padding: 1.2rem 0.5rem; }
+    .auth-header h2 { font-size: 1.2rem; }
+    .btn-primary { font-size: 0.97rem; }
+}
+</style>
+<div class="auth-wrapper">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Cuisine Gourmet</h2>
+            <p>Connectez-vous à votre compte</p>
+        </div>
+        <ul class="nav nav-tabs" id="authTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" type="button" role="tab">Connexion</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" href="{% url 'base:inscription' %}">Créer un compte</a>
+            </li>
+        </ul>
+        <form id="loginForm" method="post" action="{% url 'base:connexion' %}">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="loginEmail" name="email" placeholder="Email" required>
+                <label for="loginEmail">Email</label>
+            </div>
+            <div class="form-floating mb-3 password-toggle">
+                <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Mot de passe" required autocomplete="current-password">
+                <label for="loginPassword">Mot de passe</label>
+                <span class="toggle-password"><i class="fas fa-eye"></i></span>
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Se connecter</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+    toggle.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('input');
+        const icon = this.querySelector('i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+            this.classList.add('active');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+            this.classList.remove('active');
+        }
+    });
+});
+</script>
+{% endblock %}

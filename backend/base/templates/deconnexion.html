@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h2>Déconnexion en cours...</h2>
+    <div class="spinner-border text-primary mt-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<script>
+    // Soumet automatiquement le formulaire de déconnexion
+    window.onload = function() {
+        document.getElementById('logoutForm').submit();
+    };
+</script>
+
+<form id="logoutForm" action="{% url 'base:deconnexion' %}" method="post" style="display:none;">
+    {% csrf_token %}
+</form>
+{% endblock %}

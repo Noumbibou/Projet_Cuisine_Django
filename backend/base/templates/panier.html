@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+body {
+    background: linear-gradient(120deg, #f8fafc 60%, #e0f7fa 100%);
+    font-size: 0.97rem;
+}
+.panier-card {
+    border-radius: 2rem;
+    box-shadow: 0 8px 40px rgba(44, 62, 80, 0.13);
+    border: none;
+    overflow: hidden;
+    background: #fff;
+}
+.panier-header {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    color: #fff;
+    border-radius: 2rem 2rem 0 0;
+    padding: 1.2rem 1.5rem 1rem 1.5rem;
+    box-shadow: 0 4px 24px #38b2ac22;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.panier-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 0;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.panier-header .badge {
+    background: #fff;
+    color: #38b2ac;
+    font-size: 0.98rem;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.3em 0.8em;
+    box-shadow: 0 2px 8px #38b2ac22;
+}
+.panier-table {
+    margin-top: 1.2rem;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.panier-table th, .panier-table td {
+    vertical-align: middle !important;
+    font-size: 0.98rem;
+    border: none;
+    background: transparent;
+}
+.panier-table th {
+    background: #f8fafc;
+    color: #222;
+    font-weight: 700;
+    border-top: none;
+    letter-spacing: 0.01em;
+    font-size: 1rem;
+}
+.panier-table td {
+    background: #fff;
+    font-size: 0.97rem;
+}
+.panier-table img {
+    max-width: 48px;
+    max-height: 48px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #38b2ac22;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+.panier-table tr {
+    transition: background 0.2s;
+}
+.panier-table tbody tr:hover {
+    background: #e0f7fa44;
+}
+.panier-total-row {
+    border-top: 2px solid #e2e8f0;
+    padding-top: 1rem;
+    margin-top: 1.2rem;
+    gap: 1.2rem;
+}
+.panier-total {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #38b2ac;
+    letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.panier-total .text-success {
+    font-size: 1.1em;
+    font-weight: 700;
+}
+.panier-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+}
+.panier-actions .btn {
+    font-weight: 600;
+    font-size: 0.97rem;
+    border-radius: 1.2rem;
+    padding: 0.45rem 1.3rem;
+    box-shadow: 0 2px 8px #38b2ac22;
+    border: none;
+    transition: background 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.panier-actions .btn-danger {
+    background: linear-gradient(90deg, #ff5e62 0%, #ff9966 100%);
+    color: #fff;
+}
+.panier-actions .btn-danger:hover {
+    background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+    color: #fff;
+}
+.panier-actions .btn-success {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    color: #fff;
+}
+.panier-actions .btn-success:hover {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+    color: #fff;
+}
+@media (max-width: 991px) {
+    .panier-header { padding: 1rem 0.7rem 0.7rem 0.7rem; font-size: 1rem; }
+    .panier-table th, .panier-table td { font-size: 0.93rem; }
+    .panier-total { font-size: 0.97rem; }
+    .panier-actions .btn { font-size: 0.93rem; padding: 0.35rem 1rem; }
+}
+@media (max-width: 767px) {
+    .panier-header { flex-direction: column; gap: 0.5rem; padding: 0.7rem 0.3rem; font-size: 0.93rem; }
+    .panier-table th, .panier-table td { font-size: 0.91rem; }
+    .panier-total { font-size: 0.93rem; }
+    .panier-actions { flex-direction: column; gap: 0.5rem; }
+    .panier-actions .btn { font-size: 0.91rem; padding: 0.3rem 0.8rem; width: 100%; }
+}
+</style>
+
+<div class="container mt-5">
+    {% if not user.is_authenticated %}
+                            <div class="alert alert-warning mt-3">
+                                Vous devez être connecté pour valider votre commande.
+                            </div>
+                        {% endif %}
+    <div class="card panier-card shadow">
+        <div class="panier-header">
+            <h2 class="mb-0">
+                <i class="fas fa-shopping-basket"></i>
+                Votre panier
+                <span class="badge">{{ panier|length }} plat{{ panier|length|pluralize }}</span>
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table panier-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Plat</th>
+                            <th>Quantité</th>
+                            <th>Prix Unitaire</th>
+                            <th>Sous-total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in panier %}
+                        <tr>
+                            <td>
+                                <strong>{{ item.plat.nom_plat }}</strong><br>
+                                {% if item.plat.image %}
+                                    <img src="{{ item.plat.image.url }}" alt="{{ item.plat.nom_plat }}">
+                                {% endif %}
+                            </td>
+                            <td>{{ item.quantite }}</td>
+                            <td>{{ item.plat.prix }} €</td>
+                            <td class="fw-bold">{{ item.sous_total }} €</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center panier-total-row">
+                <div class="panier-total mb-3 mb-md-0">
+                    <span>Total :</span>
+                    <span class="text-success">{{ total }} €</span>
+                </div>
+                <div class="panier-actions">
+                    <a href="{% url 'base:menu_list' %}" class="btn btn-danger">
+                        <i class="fas fa-times"></i> Refuser
+                    </a>
+                    <form method="post" action="{% url 'base:valider_commande' %}" class="d-inline">
+                        {% csrf_token %}
+                        {% for item in panier %}
+                            <input type="hidden" name="plats_ids" value="{{ item.plat.id }}">
+                            <input type="hidden" name="quantites" value="{{ item.quantite }}">
+                        {% endfor %}
+                            <button type="submit" class="btn btn-success" {% if not user.is_authenticated %}disabled{% endif %}>
+                                <i class="fas fa-check"></i> Valider
+                            </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

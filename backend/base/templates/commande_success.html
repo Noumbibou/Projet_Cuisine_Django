@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.success-card {
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 32px rgba(44, 62, 80, 0.10);
+    border: none;
+    overflow: hidden;
+    background: #fff;
+}
+.success-header {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    color: #fff;
+    border-radius: 1.5rem 1.5rem 0 0;
+    padding: 1.2rem 2rem;
+    text-align: center;
+}
+.success-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.success-header p {
+    font-size: 1.08rem;
+    margin-bottom: 0;
+}
+.table.success-table th {
+    background: #e0f7fa;
+    color: #222;
+    font-weight: 700;
+    font-size: 1.03rem;
+    border-top: none;
+    letter-spacing: 0.01em;
+}
+.table.success-table td {
+    background: #fff;
+    font-size: 0.97rem;
+    vertical-align: middle;
+}
+.table.success-table tbody tr:hover {
+    background: #e0f7fa33;
+}
+.total-row {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #38b2ac;
+    letter-spacing: 0.01em;
+}
+.btn-primary {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    border: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 1.2rem;
+    padding: 0.55rem 2rem;
+    box-shadow: 0 2px 8px #38b2ac22;
+    transition: background 0.18s;
+}
+.btn-primary:hover {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+}
+@media (max-width: 767px) {
+    .success-header { padding: 1rem 0.5rem; font-size: 1.1rem; }
+    .success-header h3 { font-size: 1.2rem; }
+    .table.success-table th, .table.success-table td { font-size: 0.91rem; }
+    .btn-primary { font-size: 0.93rem; padding: 0.4rem 1.1rem; }
+}
+</style>
+<div class="container mt-5 mb-5">
+    <div class="success-card mx-auto" style="max-width: 600px;">
+        <div class="success-header">
+            <h3><i class="fas fa-check-circle me-2 text-warning"></i>Commande validée avec succès !</h3>
+            <p>Merci pour votre commande, <span class="fw-bold">{{ commande.utilisateur.username }}</span>.</p>
+        </div>
+        <div class="card-body">
+            <h4 class="mb-3 text-center text-secondary" style="font-size:1.2rem;">Détails de votre commande</h4>
+            <table class="table success-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Plat</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire</th>
+                        <th>Sous-total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ligne in lignes %}
+                    <tr>
+                        <td>{{ ligne.plat.nom_plat }}</td>
+                        <td>{{ ligne.quantite }}</td>
+                        <td>{{ ligne.plat.prix }} €</td>
+                        <td>{{ ligne.sous_total }} €</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-end mt-3 total-row">
+                Total : <span class="text-success">{{ commande.prix_total }} €</span>
+            </div>
+        </div>
+    </div>
+    <div class="mt-4 text-center">
+        <a href="{% url 'base:menu_list' %}" class="btn btn-primary"><i class="fas fa-arrow-left me-2"></i>Retour au menu</a>
+    </div>
+</div>
+{% endblock %}

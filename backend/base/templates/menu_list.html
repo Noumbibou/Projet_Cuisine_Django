@@ -1,0 +1,354 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+body {
+    background: linear-gradient(120deg, #f8fafc 60%, #e0f7fa 100%);
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    color: #222;
+    font-size: 0.97rem;
+}
+h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #2d3748;
+    font-size: 1.7rem;
+}
+.menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
+}
+.menu-header .filter-select {
+    min-width: 180px;
+}
+#cuisine-select {
+    border-radius: 1.2rem;
+    border: 1.2px solid #e2e8f0;
+    font-size: 0.98rem;
+    background: #fff;
+    transition: border-color 0.2s;
+    box-shadow: 0 2px 8px #38b2ac11;
+    padding: 0.5rem 1rem;
+}
+#cuisine-select:focus {
+    border-color: #38b2ac;
+    box-shadow: 0 0 0 2px #38b2ac33;
+}
+#panier-form .btn-primary {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(72, 187, 255, 0.08);
+    position: relative;
+    transition: background 0.2s, box-shadow 0.2s;
+    border-radius: 2rem;
+    padding: 0.5rem 1.2rem 0.5rem 1.7rem;
+    font-size: 0.98rem;
+}
+#panier-form .btn-primary:hover {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    box-shadow: 0 4px 24px #38b2ac33;
+}
+#panier-count {
+    animation: badge-pop 0.3s;
+    font-size: 0.95em;
+    padding: 0.3em 0.6em;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px #38b2ac44;
+}
+@keyframes badge-pop {
+    0% { transform: scale(0.7);}
+    70% { transform: scale(1.2);}
+    100% { transform: scale(1);}
+}
+#plats-gallery {
+    margin-top: 2rem;
+}
+.plat-card {
+    max-width: 340px;
+    border: none;
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 32px rgba(44, 62, 80, 0.10);
+    background: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+    transition: transform 0.18s, box-shadow 0.18s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.plat-card:hover {
+    transform: translateY(-6px) scale(1.025);
+    box-shadow: 0 8px 32px rgba(56, 178, 172, 0.13);
+}
+.plat-card .card-img-top {
+    border-radius: 1.5rem 1.5rem 0 0;
+    object-fit: cover;
+    height: 180px;
+    width: 100%;
+    background: #e2e8f0;
+    transition: filter 0.3s;
+}
+.plat-card:hover .card-img-top {
+    filter: brightness(0.93) saturate(1.2);
+}
+.plat-card .badge {
+    font-size: 1em;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #00000011;
+}
+.plat-card .plat-checkbox {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 3;
+    width: 1.1em;
+    height: 1.1em;
+    accent-color: #0d6efd;
+    border-radius: 0.4em;
+    border: 2px solid #38b2ac;
+    background: #fff;
+    box-shadow: 0 1px 4px #38b2ac22;
+}
+.plat-card .plat-checkbox:checked {
+    box-shadow: 0 0 0 3px #38b2ac44;
+}
+.plat-card .card-body {
+    padding: 1.1rem 1rem 0.9rem 1rem;
+}
+.plat-card .card-title {
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 0;
+    letter-spacing: 0.01em;
+}
+.plat-card .card-text {
+    color: #718096;
+    font-size: 0.93rem;
+    margin-bottom: 0.5rem;
+}
+.plat-card .plat-desc {
+    font-size: 0.98em;
+    color: #6c757d;
+    margin-bottom: 0.7rem;
+}
+.plat-card .plat-infos {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+    flex-wrap: wrap;
+}
+.plat-card .plat-infos .badge {
+    background: #f8fafc;
+    color: #222;
+    border: 1px solid #e2e8f0;
+    font-weight: 500;
+}
+.plat-card .plat-commande-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.7rem;
+}
+.plat-card .plat-quantite {
+    width: 55px;
+    border-radius: 0.7em;
+    border: 1.2px solid #e2e8f0;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.97rem;
+    background: #f8fafc;
+}
+.plat-card .plat-quantite:focus {
+    border-color: #38b2ac;
+    box-shadow: 0 0 0 2px #38b2ac33;
+}
+.plat-card .btn-dark {
+    border-radius: 0.8rem;
+    font-weight: 600;
+    font-size: 0.98rem;
+    padding: 0.45rem 1.2rem;
+}
+@media (max-width: 991px) {
+    .plat-card .card-img-top { height: 120px; }
+    .plat-card { max-width: 98vw; }
+}
+@media (max-width: 767px) {
+    h2 { font-size: 1.1rem; }
+    .plat-card .card-img-top { height: 80px; }
+    .plat-card .card-body { padding: 0.7rem 0.5rem 0.7rem 0.5rem; }
+    .plat-card { margin-bottom: 0.5rem; }
+    .menu-header { flex-direction: column; gap: 1rem; }
+    #panier-form .btn-primary { font-size: 0.93rem; padding: 0.4rem 0.8rem 0.4rem 1.1rem; }
+}
+</style>
+
+<div class="container mt-5">
+    <div class="menu-header mb-4">
+        <div class="filter-select">
+            <select id="cuisine-select" class="form-select shadow-sm">
+                <option value="all">Toutes les cuisines</option>
+                {% for cuisine in cuisines %}
+                    <option value="cuisine-{{ cuisine.id }}">{{ cuisine.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <h2 class="mb-0 text-center flex-grow-1">Découvrez nos Plats</h2>
+        <!-- Bouton Panier en haut à droite -->
+        <form id="panier-form" method="post" action="{% url 'base:valider_panier' %}" class="ms-3">
+                            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary position-relative shadow">
+                <i class="fas fa-shopping-cart"></i> 
+                <span class="ms-2">Valider le panier</span>
+                <span id="panier-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow" style="display:none;">0</span>
+            </button>
+            <input type="hidden" name="plats_selectionnes" id="plats_selectionnes">
+            <input type="hidden" name="quantites_selectionnees" id="quantites_selectionnees">
+        </form>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="plats-gallery">
+        {% for plat in plats %}
+        <div class="col plat-item cuisine-{{ plat.id_cuisine.id }}">
+            <div class="card plat-card shadow rounded-4 position-relative">
+                <!-- Checkbox en haut à gauche -->
+                <input type="checkbox" class="plat-checkbox" data-plat="{{ plat.id }}">
+                <div class="position-relative">
+                    {% if plat.image %}
+                        <img src="{{ plat.image.url }}" class="card-img-top rounded-top-4" alt="{{ plat.nom_plat }}">
+                    {% endif %}
+                    {% if plat.note %}
+                        <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-3 d-flex align-items-center px-2 py-1 shadow-sm">
+                            <i class="fas fa-star me-1"></i> {{ plat.note|floatformat:1 }}
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="card-body pb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="card-title fw-bold mb-0">{{ plat.nom_plat }}</h5>
+                        <span class="fs-5 fw-bold ms-2">{{ plat.prix }}€</span>
+                    </div>
+                    <p class="plat-desc">
+                        {% if plat.description %}
+                            {{ plat.description|truncatechars:80 }}
+                        {% else %}
+                            <span class="text-muted">Plat délicieux à découvrir !</span>
+                        {% endif %}
+                    </p>
+                    <div class="plat-infos mb-3">
+                        <span class="text-muted small d-flex align-items-center"><i class="far fa-clock me-1"></i>{{ plat.temp_preparation }} min</span>
+                        <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">{{ plat.id_cuisine.name }}</span>
+                        {% if plat.is_signature %}
+                            <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">Signature</span>
+                        {% endif %}
+                        {% if plat.is_premium %}
+                            <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">Premium</span>
+                        {% endif %}
+                    </div>
+                    <div class="plat-commande-row">
+                        <form method="post" action="{% url 'base:passer_commande' plat.id %}" class="d-flex align-items-center w-100">
+                            {% csrf_token %}
+                            <input type="hidden" name="plat_id" value="{{ plat.id }}">
+                            <input type="hidden" name="quantite" value="1" id="form_quantite_{{ plat.id }}">
+                            <button type="submit" class="btn btn-dark w-auto fw-semibold rounded-3 py-2 me-2">
+                                <i class="fas fa-bolt"></i> Commander
+                            </button>
+                            <label for="quantite_{{ plat.id }}" class="me-2 mb-0">Qté :</label>
+                            <input type="number" min="1" value="1" name="quantite_{{ plat.id }}" id="quantite_{{ plat.id }}" class="form-control plat-quantite" data-plat="{{ plat.id }}">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Filtrage par cuisine avec animation
+    const select = document.getElementById('cuisine-select');
+    const plats = document.querySelectorAll('.plat-item');
+    select.addEventListener('change', function() {
+        const value = this.value;
+        plats.forEach(plat => {
+            plat.style.transition = 'opacity 0.25s';
+            if (value === 'all' || plat.classList.contains(value)) {
+                plat.style.opacity = '1';
+                setTimeout(() => { plat.style.display = ''; }, 250);
+            } else {
+                plat.style.opacity = '0';
+                setTimeout(() => { plat.style.display = 'none'; }, 250);
+            }
+        });
+    });
+
+    // Synchronise la quantité du champ quantité avec le formulaire de chaque plat
+    document.querySelectorAll('input[type="number"][name^="quantite_"]').forEach(input => {
+        input.addEventListener('input', function() {
+            const platId = this.id.replace('quantite_', '');
+            const formInput = document.getElementById('form_quantite_' + platId);
+            if (formInput) {
+                formInput.value = this.value;
+            }
+        });
+    });
+
+    // Gestion du bouton panier
+    const panierForm = document.getElementById('panier-form');
+    const checkboxes = document.querySelectorAll('.plat-checkbox');
+    const quantites = document.querySelectorAll('.plat-quantite');
+    const platsSelectionnesInput = document.getElementById('plats_selectionnes');
+    const quantitesSelectionneesInput = document.getElementById('quantites_selectionnees');
+    const panierCount = document.getElementById('panier-count');
+
+    function updatePanier() {
+        let platsSelectionnes = [];
+        let quantitesSelectionnees = [];
+        let count = 0;
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                platsSelectionnes.push(checkbox.getAttribute('data-plat'));
+                const qteInput = document.querySelector('.plat-quantite[data-plat="' + checkbox.getAttribute('data-plat') + '"]');
+                quantitesSelectionnees.push(qteInput ? qteInput.value : "1");
+                count++;
+            }
+        });
+        platsSelectionnesInput.value = platsSelectionnes.join(',');
+        quantitesSelectionneesInput.value = quantitesSelectionnees.join(',');
+        panierCount.textContent = count;
+        panierCount.style.display = count > 0 ? 'inline-block' : 'none';
+        panierCount.classList.remove('animate__animated', 'animate__bounceIn');
+        if (count > 0) {
+            panierCount.classList.add('animate__animated', 'animate__bounceIn');
+        }
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updatePanier));
+    quantites.forEach(q => q.addEventListener('input', updatePanier));
+
+    panierForm.addEventListener('submit', function(e) {
+        if (!platsSelectionnesInput.value) {
+            e.preventDefault();
+            alert("Veuillez sélectionner au moins un plat à ajouter au panier.");
+        }
+    });
+});
+</script>
+{% endblock %}

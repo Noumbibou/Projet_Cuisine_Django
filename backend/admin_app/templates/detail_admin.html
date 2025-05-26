@@ -1,0 +1,86 @@
+{% extends 'base/dashboard.html' %}
+
+{% block content %}
+<style>
+.admin-profile-card {
+    max-width: 420px;
+    width: 100%;
+    border-radius: 1.3rem;
+    border: none;
+    box-shadow: 0 6px 32px #38b2ac22;
+    background: #fff;
+    margin: auto;
+}
+.admin-profile-avatar {
+    font-size: 4rem;
+    color: #38b2ac;
+    margin-bottom: 0.7rem;
+}
+.admin-profile-title {
+    color: #38b2ac;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    margin-bottom: 1.2rem;
+}
+.admin-profile-list .list-group-item {
+    background: #f8fafc;
+    border: none;
+    border-radius: 0.7rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.04rem;
+    box-shadow: 0 1px 4px #38b2ac11;
+}
+.admin-profile-list strong {
+    color: #22223b;
+    min-width: 110px;
+    display: inline-block;
+}
+.btn-logout {
+    font-size: 1rem;
+    padding: 0.5rem 2.2rem;
+    border-radius: 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px #38b2ac22;
+    background: linear-gradient(90deg, #ff5e62 0%, #ff9966 100%);
+    border: none;
+    color: #fff;
+    transition: background 0.18s;
+}
+.btn-logout:hover {
+    background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+    color: #fff;
+}
+@media (max-width: 600px) {
+    .admin-profile-card { padding: 0.5rem 0.2rem; }
+    .admin-profile-title { font-size: 1.05rem; }
+    .btn-logout { font-size: 0.97rem; padding: 0.4rem 1.2rem; }
+}
+</style>
+<div class="container mt-5 d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="card admin-profile-card">
+        <div class="card-body p-4">
+            <div class="text-center mb-2">
+                <i class="fas fa-user-circle admin-profile-avatar"></i>
+            </div>
+            <h4 class="card-title text-center admin-profile-title">
+                {{ user.nom }} {{ user.prenom }}
+            </h4>
+            <ul class="list-group list-group-flush mb-4 admin-profile-list">
+                <li class="list-group-item"><strong>Nom :</strong> {{ user.nom }}</li>
+                <li class="list-group-item"><strong>Prénom :</strong> {{ user.prenom }}</li>
+                <li class="list-group-item"><strong>Email :</strong> {{ user.email }}</li>
+                <li class="list-group-item"><strong>Date d'inscription :</strong> {{ user.date_joined|date:"d M Y" }}</li>
+            </ul>
+            <div class="d-flex justify-content-center">
+                <form action="{% url 'base:deconnexion' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

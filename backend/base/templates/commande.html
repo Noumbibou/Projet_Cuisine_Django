@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.commande-header {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #38b2ac;
+    letter-spacing: 0.02em;
+    margin-bottom: 2rem;
+}
+.filtre-bar {
+    background: #f8fafc;
+    border-radius: 1.2rem;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 2px 12px #38b2ac11;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+.filtre-bar input[type="date"] {
+    border-radius: 0.8rem;
+    border: 1.5px solid #e2e8f0;
+    font-size: 1rem;
+    padding: 0.6rem 1.1rem;
+    box-shadow: 0 1px 4px #38b2ac11;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filtre-bar input[type="date"]:focus {
+    border-color: #38b2ac;
+    box-shadow: 0 0 0 2px #38b2ac33;
+}
+.table.commande-table {
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 16px #38b2ac11;
+}
+.table.commande-table th {
+    background: #e0f7fa;
+    color: #222;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-top: none;
+    letter-spacing: 0.01em;
+}
+.table.commande-table td {
+    background: #fff;
+    font-size: 0.97rem;
+    vertical-align: middle;
+}
+.table.commande-table tbody tr {
+    transition: background 0.18s;
+}
+.table.commande-table tbody tr:hover {
+    background: #e0f7fa33;
+}
+.btn-info.btn-sm {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    border-radius: 1rem;
+    padding: 0.3rem 1.1rem;
+    font-size: 0.97rem;
+    box-shadow: 0 2px 8px #38b2ac22;
+    transition: background 0.18s;
+}
+.btn-info.btn-sm:hover {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+    color: #fff;
+}
+.list-group-item {
+    border: none;
+    border-radius: 0.7rem;
+    background: #f8fafc;
+    margin-bottom: 0.3rem;
+    font-size: 0.96rem;
+    box-shadow: 0 1px 4px #38b2ac11;
+}
+.plat-img-thumb {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+@media (max-width: 767px) {
+    .commande-header { font-size: 1.2rem; }
+    .filtre-bar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 0.7rem; }
+    .table.commande-table th, .table.commande-table td { font-size: 0.91rem; }
+}
+</style>
+
+<div class="container mt-5">
+    <h2 class="commande-header">Mes commandes</h2>
+    <!-- Filtre par date -->
+    <div class="filtre-bar">
+        <label for="filtre-date" class="mb-0 fw-semibold text-secondary"><i class="fa fa-calendar-alt me-2"></i>Filtrer par date :</label>
+        <input type="date" id="filtre-date" class="form-control" style="max-width:220px;">
+    </div>
+    {% if commandes %}
+        <div class="table-responsive">
+            <table class="table table-striped align-middle commande-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Nombre de plats</th>
+                        <th>Prix total</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                    <tr data-date="{{ commande.date_commande|date:'Y-m-d' }}">
+                        <td hidden>{{ forloop.counter }}</td>
+                        <td>{{ commande.date_commande|date:"d/m/Y H:i" }}</td>
+                        <td>{{ commande.commandeplat_set.count }}</td>
+                        <td>{{ commande.prix_total }} €</td>
+                        <td>
+                            <button class="btn btn-info btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#details{{ commande.id }}">
+                                Voir
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="collapse" id="details{{ commande.id }}">
+                        <td colspan="5">
+                            <ul class="list-group">
+                                {% for ligne in commande.commandeplat_set.all %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <i class="fas fa-utensils text-primary me-2"></i>
+                                        {% if ligne.image_plat %}
+                                            <img src="{{ ligne.image_plat.url }}" alt="Image" class="plat-img-thumb">
+                                        {% endif %}
+                                        {{ ligne.quantite }} x {{ ligne.nom_plat }}
+                                    </span>
+                                    <span class="fw-bold text-success">{{ ligne.prix_plat }} €</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info mt-4">Aucune commande passée pour le moment.</div>
+    {% endif %}
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filtreDate = document.getElementById('filtre-date');
+    filtreDate.addEventListener('change', function() {
+        const value = this.value;
+        document.querySelectorAll('tbody tr[data-date]').forEach(row => {
+            if (!value || row.getAttribute('data-date') === value) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        // Afficher/masquer aussi les lignes de détails associées
+        document.querySelectorAll('tbody tr.collapse').forEach(row => {
+            row.style.display = '';
+        });
+    });
+});
+</script>
+{% endblock %}

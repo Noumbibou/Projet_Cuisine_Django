@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% block title %}Inscription - Cuisine Gourmet{% endblock %}
+
+{% block content %}
+<style>
+:root {
+    --primary-color: #38b2ac;
+    --secondary-color: #4f8cff;
+    --cream-color: #f8f9fa;
+    --text-color: #495057;
+}
+.auth-wrapper {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 0;
+    background: var(--cream-color);
+}
+.auth-container {
+    max-width: 480px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 2.2rem 2rem 2rem 2rem;
+    background: #fff;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.10);
+}
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+.auth-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    letter-spacing: 0.03em;
+}
+.auth-header p {
+    color: var(--text-color);
+    font-size: 1.05rem;
+}
+.form-floating {
+    margin-bottom: 1.3rem;
+    position: relative;
+}
+.form-floating > .form-control {
+    height: calc(3.1rem + 2px);
+    padding: 1.3rem 0.75rem 0.6rem;
+    border: 1.2px solid #ced4da;
+    border-radius: 0.7rem;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+.form-floating > .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.15rem #38b2ac33;
+}
+.form-floating > label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 1rem 0.75rem;
+    color: var(--text-color);
+    pointer-events: none;
+    border: 1px solid transparent;
+    transform-origin: 0 0;
+    transition: all 0.2s;
+}
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    color: var(--primary-color);
+    background: #fff;
+    padding: 0 0.5rem;
+    height: fit-content;
+}
+.password-toggle {
+    position: relative;
+}
+.password-toggle .toggle-password {
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #b0b0b0;
+    z-index: 5;
+    font-size: 1.15rem;
+    transition: color 0.2s;
+}
+.password-toggle .toggle-password.active {
+    color: var(--primary-color);
+}
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+.form-check-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.15rem #38b2ac33;
+}
+.btn-primary {
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border-radius: 0.7rem;
+    padding: 0.7rem 0;
+    width: 100%;
+    box-shadow: 0 2px 8px #38b2ac22;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-primary:hover {
+    background: linear-gradient(90deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+}
+.alert {
+    border-radius: 0.7rem;
+    margin: 1rem 0;
+    font-size: 0.97rem;
+    animation: fadeIn 0.3s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+@media (max-width: 600px) {
+    .auth-container { padding: 1.2rem 0.5rem; }
+    .auth-header h2 { font-size: 1.2rem; }
+    .btn-primary { font-size: 0.97rem; }
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+.invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+</style>
+
+<div class="auth-wrapper">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h2>Cuisine Gourmet</h2>
+            <p>Créez votre compte</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <!-- Champ Nom -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="id_nom" name="nom" placeholder="Nom" required>
+                <label for="id_nom">Nom</label>
+                {% if form.nom.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.nom.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Champ Prénom -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="id_prenom" name="prenom" placeholder="Prénom" required>
+                <label for="id_prenom">Prénom</label>
+                {% if form.prenom.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.prenom.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Champ Email -->
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="id_email" name="email" placeholder="Email" required>
+                <label for="id_email">Email</label>
+                {% if form.email.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.email.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Champ Mot de passe -->
+            <div class="form-floating mb-3 password-toggle">
+                <input type="password" class="form-control" id="id_password1" name="password1" placeholder="Mot de passe" required autocomplete="new-password">
+                <label for="id_password1">Mot de passe</label>
+                <span class="toggle-password"><i class="fas fa-eye"></i></span>
+                {% if form.password1.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.password1.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- Confirmation Mot de passe -->
+            <div class="form-floating mb-3 password-toggle">
+                <input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirmer le mot de passe" required autocomplete="new-password">
+                <label for="id_password2">Confirmer le mot de passe</label>
+                <span class="toggle-password"><i class="fas fa-eye"></i></span>
+                {% if form.password2.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.password2.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <button type="submit" class="btn btn-primary w-100 py-3">S'inscrire</button>
+        </form>
+    </div>
+</div>
+<script>
+document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+    toggle.addEventListener('click', function() {
+        const input = this.parentElement.querySelector('input');
+        const icon = this.querySelector('i');
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+            this.classList.add('active');
+        } else {
+            input.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+            this.classList.remove('active');
+        }
+    });
+});
+document.querySelector('form').addEventListener('submit', function(e) {
+    const invalidFields = document.querySelectorAll('.is-invalid');
+    invalidFields.forEach(function(field) {
+        field.style.animation = 'shake 0.5s';
+        setTimeout(() => {
+            field.style.animation = '';
+        }, 500);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base/dashboard.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 500px;">
+        {% if plat.image %}
+            <img src="{{ plat.image.url }}" class="card-img-top" alt="{{ plat.nom_plat }}" style="max-height:300px;object-fit:cover;">
+        {% endif %}
+        <div class="card-body">
+            <h3 class="card-title">{{ plat.nom_plat }}</h3>
+            <p class="card-text"><strong>Temps de préparation :</strong> {{ plat.temp_preparation }} min</p>
+            <p class="card-text"><strong>Prix :</strong> {{ plat.prix }} €</p>
+            <p class="card-text"><strong>Cuisine :</strong> {{ plat.id_cuisine.name }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

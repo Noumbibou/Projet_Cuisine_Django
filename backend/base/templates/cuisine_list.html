@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f8f9fa;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 800px;
+                margin: 20px auto;
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                text-align: center;
+                color: #343a40;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border: 1px solid #dee2e6;
+            }
+            th {
+                background-color: #343a40;
+                color: #ffffff;
+            }
+            tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            tr:hover {
+                background-color: #e9ecef;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-3">
+            <h1>Le catalogue de cuisine</h1>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Identifiant</th>
+                        <th>Nom</th>
+                        <th>Catégorie</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cuisine in cuisines %}
+                    <tr>
+                        <td>{{ cuisine.id }}</td>
+                        <td>{{ cuisine.name }}</td>
+                        <td>{{ cuisine.category }}</td>
+                        <td>{{ cuisine.price }}</td>
+                        <td><a href="{{cuisine.id}}">details du produit</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
