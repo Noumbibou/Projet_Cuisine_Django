@@ -1,0 +1,20 @@
+Django>=5.2
+djangorestframework
+Pillow
+mysqlclient
+django-crispy-forms
+crispy-bootstrap5
+python-dotenv
+django-widget-tweaks
+# Pour le support de l'authentification personnalisée
+bcrypt
+# Pour le support des fichiers statiques et médias
+whitenoise
+# Pour la gestion des fichiers Excel/CSV si besoin
+openpyxl
+# Pour la pagination, si utilisée
+django-pagination
+# Pour le support des tests (optionnel)
+pytest
+pytest-django
+# Ajoute ici toute autre dépendance spécifique à ton projet

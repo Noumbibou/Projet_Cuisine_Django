@@ -76,26 +76,6 @@ class Plat(models.Model):
     def _str_(self):
         return self.nom_plat
 
-# Modèle Ingrédient
-class Ingredient(models.Model):
-    nom = models.CharField(max_length=100)
-    quantite = models.CharField(max_length=50)
-    id_plat = models.ForeignKey(Plat, on_delete=models.CASCADE)
-
-    def _str_(self):
-        return self.nom
-
-
-# Modèle Catégorie
-class Categorie(models.Model):
-    nom = models.CharField(max_length=100)
-    description = models.TextField()
-    id_plat = models.ForeignKey(Plat, on_delete=models.CASCADE)
-
-    def _str_(self):
-        return self.nom
-
-
 # Modèle Historique
 class Historique(models.Model):
     date_action = models.DateTimeField(auto_now_add=True)
@@ -103,7 +83,6 @@ class Historique(models.Model):
     detail = models.TextField()
     id_utilisateur = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     id_plat = models.ForeignKey(Plat, on_delete=models.CASCADE, null=True, blank=True)
-    id_ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, null=True, blank=True)
 
     def _str_(self):
         return f"{self.type_action} - {self.date_action}"    
