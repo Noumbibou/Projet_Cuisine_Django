@@ -173,11 +173,22 @@ h2 {
     border-color: #38b2ac;
     box-shadow: 0 0 0 2px #38b2ac33;
 }
+/* Modification du bouton Commander pour reprendre le dégradé du navbar */
 .plat-card .btn-dark {
     border-radius: 0.8rem;
     font-weight: 600;
     font-size: 0.98rem;
     padding: 0.45rem 1.2rem;
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%) !important;
+    border: none !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(56, 178, 172, 0.08);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.plat-card .btn-dark:hover {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%) !important;
+    box-shadow: 0 4px 24px #38b2ac33;
+    color: #fff !important;
 }
 @media (max-width: 991px) {
     .plat-card .card-img-top { height: 120px; }
@@ -206,7 +217,7 @@ h2 {
         <h2 class="mb-0 text-center flex-grow-1">Découvrez nos Plats</h2>
         <!-- Bouton Panier en haut à droite -->
         <form id="panier-form" method="post" action="{% url 'base:valider_panier' %}" class="ms-3">
-                            {% if messages %}
+            {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}">
                         {{ message }}

@@ -1,21 +1,103 @@
 {% extends 'base/dashboard.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card mx-auto" style="max-width: 500px;">
-        <div class="card-header bg-primary text-white">
-            <h4>Modifier le plat</h4>
+<style>
+    .plat-update-container {
+        margin-top: 48px;
+        margin-bottom: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+    }
+    .plat-update-card {
+        max-width: 540px;
+        width: 100%;
+        border-radius: 1.5rem;
+        box-shadow: 0 6px 32px rgba(44, 62, 80, 0.13);
+        border: none;
+        overflow: hidden;
+        background: #fff;
+    }
+    .plat-update-card .card-header {
+        background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+        color: #fff;
+        border-bottom: none;
+        padding: 1.5rem 2rem;
+        text-align: center;
+    }
+    .plat-update-card .card-body {
+        padding: 2rem 2rem 1.5rem 2rem;
+    }
+    .plat-update-card label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.4rem;
+    }
+    .plat-update-card input[type="text"],
+    .plat-update-card input[type="number"],
+    .plat-update-card input[type="file"],
+    .plat-update-card select {
+        border-radius: 0.8rem;
+        font-size: 1rem;
+        border: 1.2px solid #e2e8f0;
+        box-shadow: 0 2px 8px #38b2ac11;
+        padding: 0.6rem 1rem;
+        margin-bottom: 0.7rem;
+        transition: border-color 0.2s;
+    }
+    .plat-update-card input:focus,
+    .plat-update-card select:focus {
+        border-color: #38b2ac;
+        box-shadow: 0 0 0 2px #38b2ac33;
+    }
+    .plat-update-card .btn-success {
+        background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+        border: none;
+        font-weight: 600;
+        border-radius: 0.8rem;
+        padding: 0.55rem 1.6rem;
+        font-size: 1.07rem;
+        box-shadow: 0 2px 8px #38b2ac22;
+        transition: background 0.2s, box-shadow 0.2s;
+    }
+    .plat-update-card .btn-success:hover {
+        background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+        box-shadow: 0 4px 24px #38b2ac33;
+    }
+    .plat-update-card .btn-secondary {
+        border-radius: 0.8rem;
+        font-size: 1.07rem;
+        padding: 0.55rem 1.6rem;
+        margin-left: 0.5rem;
+    }
+    .plat-update-card img {
+        border-radius: 10px;
+        box-shadow: 0 2px 8px #38b2ac22;
+        margin-bottom: 0.7rem;
+    }
+    .alert {
+        font-size: 0.98rem;
+        border-radius: 0.7rem;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="plat-update-container">
+    <div class="card plat-update-card">
+        <div class="card-header">
+            <h4 class="mb-0"><i class="fas fa-utensils me-2"></i>Modifier le plat</h4>
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
-                        {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="nom_plat" class="form-label">Nom du plat</label>
@@ -49,14 +131,17 @@
                 <div class="mb-3">
                     <label for="image" class="form-label">Image du plat</label>
                     {% if plat.image %}
-                        <div class="mb-2">
-                            <img src="{{ plat.image.url }}" alt="Image actuelle" style="max-width: 120px; max-height: 120px; border-radius: 8px;">
+                        <div class="mb-2 text-center">
+                            <img src="{{ plat.image.url }}" alt="Image actuelle" style="max-width: 120px; max-height: 120px;">
+                            <div class="text-muted small mt-1">Image actuelle</div>
                         </div>
                     {% endif %}
                     <input type="file" class="form-control" id="image" name="image">
                 </div>
-                <button type="submit" class="btn btn-success">Enregistrer les modifications</button>
-                <a href="{% url 'admin_app:plat' %}" class="btn btn-secondary ms-2">Annuler</a>
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <a href="{% url 'admin_app:plat' %}" class="btn btn-secondary ms-2">Annuler</a>
+                </div>
             </form>
         </div>
     </div>

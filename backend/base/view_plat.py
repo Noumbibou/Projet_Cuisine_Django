@@ -24,7 +24,7 @@ class PlatCreateView(View):
             id_cuisine=cuisine,
             image=image
             )# Assurez-vous que le champ 'image' est dans votre formulaire
-        messages.success(request, "Plat créé avec succès.")
+        messages.success(request, "Plat ajouté avec succès.")
         return redirect('admin_app:plat')
 
 

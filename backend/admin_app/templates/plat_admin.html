@@ -87,15 +87,30 @@
     background: #38b2ac;
     color: #fff;
 }
+.plat-search-input {
+    max-width: 320px;
+    border-radius: 1.2rem;
+    border: 1.2px solid #e2e8f0;
+    font-size: 1rem;
+    padding: 0.5rem 1.2rem;
+    box-shadow: 0 2px 8px #38b2ac11;
+    transition: border-color 0.2s;
+}
+.plat-search-input:focus {
+    border-color: #38b2ac;
+    box-shadow: 0 0 0 2px #38b2ac33;
+}
 @media (max-width: 767px) {
     .plat-admin-header { font-size: 1.1rem; }
     .table.plat-admin-table th, .table.plat-admin-table td { font-size: 0.91rem; }
     .btn { font-size: 0.91rem; padding: 0.3rem 0.7rem; }
+    .plat-search-input { max-width: 100%; }
 }
 </style>
 <div class="container mt-5 mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <h2 class="plat-admin-header mb-0">Liste des plats</h2>
+        <input type="text" id="plat-search" class="plat-search-input" placeholder="Rechercher un plat...">
         <a href="{% url 'admin_app:ajouter_plat' %}" class="btn btn-success">
             <i class="fas fa-plus"></i> Ajouter plat
         </a>
@@ -109,31 +124,31 @@
         {% endfor %}
     {% endif %}
     <div class="table-responsive">
-        <table class="table table-striped table-hover plat-admin-table align-middle">
+        <table class="table table-striped table-hover plat-admin-table align-middle" id="plat-table">
             <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Image</th>
-                    <th>Type de Cuisine</th>
-                    <th>Temps de préparation</th>
-                    <th>Prix</th>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Image</th>
+                    <th class="text-center">Type de Cuisine</th>
+                    <th class="text-center">Temps de préparation</th>
+                    <th class="text-center">Prix</th>
                     <th class="text-center">Options</th>
                 </tr>
             </thead>
             <tbody>
                 {% for plat in plats %}
                 <tr>
-                    <td>{{ plat.nom_plat }}</td>
-                    <td>
+                    <td class="text-center plat-nom">{{ plat.nom_plat }}</td>
+                    <td class="text-center">
                         {% if plat.image %}
                             <img src="{{ plat.image.url }}" alt="Image du plat" class="plat-img-thumb">
                         {% else %}
                             <span class="text-muted">Aucune image</span>
                         {% endif %}
                     </td>
-                    <td>{{ plat.id_cuisine.name }}</td>
-                    <td>{{ plat.temp_preparation }}</td>
-                    <td>{{ plat.prix }}</td>
+                    <td class="text-center">{{ plat.id_cuisine.name }}</td>
+                    <td class="text-center">{{ plat.temp_preparation }} min</td>
+                    <td class="text-center">{{ plat.prix }} €</td>
                     <td class="text-center">
                         <a href="{% url 'admin_app:plat_update' plat.id %}" class="btn btn-xs btn-warning me-1" style="font-size:0.85rem; padding:0.25rem 0.7rem;">
                             <i class="fas fa-edit"></i> Modifier
@@ -155,4 +170,31 @@
         </table>
     </div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('plat-search');
+    const table = document.getElementById('plat-table');
+    const rows = table.querySelectorAll('tbody tr');
+    searchInput.addEventListener('input', function() {
+        const filter = this.value.trim().toLowerCase();
+        let visibleRows = 0;
+        rows.forEach(row => {
+            const nomCell = row.querySelector('.plat-nom');
+            if (!nomCell) return;
+            const nom = nomCell.textContent.trim().toLowerCase();
+            if (nom.includes(filter)) {
+                row.style.display = '';
+                visibleRows++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        // Gérer le message "Aucun plat trouvé"
+        const emptyRow = table.querySelector('tbody tr td[colspan]');
+        if (emptyRow) {
+            emptyRow.parentElement.style.display = (visibleRows === 0) ? '' : 'none';
+        }
+    });
+});
+</script>
 {% endblock %}
