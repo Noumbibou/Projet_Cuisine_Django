@@ -1,0 +1,12 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+*
+# Ignorer les fichiers Python compilés
+*.pyc
+_pycache_/
+
+# Ignorer les dossiers et fichiers temporaires
+*.log
+*.tmp
+
+# Ignorer les fichiers de configuration locaux (à adapter)
+*.env
