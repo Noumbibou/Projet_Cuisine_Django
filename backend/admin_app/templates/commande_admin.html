@@ -2,84 +2,80 @@
 
 {% block content %}
 <style>
-.admin-commande-header {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.7rem;
-    font-weight: 700;
+.detail-row {
+    background: #f8fafc !important;
+    transition: all 0.2s;
+}
+.detail-cell {
+    padding: 0.8rem 2rem 0.8rem 3.5rem;
+    font-size: 0.97rem;
+    color: #222;
+}
+.detail-title {
+    font-weight: 600;
     color: #38b2ac;
-    letter-spacing: 0.02em;
-    margin-bottom: 2rem;
+    margin-bottom: 0.3rem;
+}
+.detail-list {
+    margin-bottom: 0;
+    padding-left: 1.2rem;
+}
+.detail-list li {
+    margin-bottom: 0.2rem;
+}
+.btn-detail {
+    background: #e0f7fa;
+    color: #38b2ac;
+    border: none;
+    border-radius: 1.2rem;
+    font-size: 0.93rem;
+    padding: 0.25rem 0.9rem;
+    font-weight: 600;
+    transition: background 0.18s;
+}
+.btn-detail.active, .btn-detail:hover {
+    background: #38b2ac;
+    color: #fff;
 }
 .filtre-bar {
-    background: #f8fafc;
-    border-radius: 1.2rem;
-    padding: 1.2rem 1.5rem;
-    box-shadow: 0 2px 12px #38b2ac11;
-    margin-bottom: 2rem;
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
+    background: #f8fafc;
+    border-radius: 1rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px #38b2ac11;
 }
-.filtre-bar input[type="text"] {
-    border-radius: 0.8rem;
-    border: 1.5px solid #e2e8f0;
+.filtre-bar label {
+    margin-bottom: 0;
+    font-size: 1.05rem;
+    color: #38b2ac;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+#search-email.form-control {
+    max-width: 320px;
+    border-radius: 1.2rem;
+    border: 1.2px solid #e2e8f0;
     font-size: 1rem;
-    padding: 0.6rem 1.1rem;
-    box-shadow: 0 1px 4px #38b2ac11;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    width: 260px;
+    padding: 0.5rem 1.2rem;
+    box-shadow: 0 2px 8px #38b2ac11;
+    transition: border-color 0.2s;
 }
-.filtre-bar input[type="text"]:focus {
+#search-email.form-control:focus {
     border-color: #38b2ac;
     box-shadow: 0 0 0 2px #38b2ac33;
 }
-.table.commande-admin-table {
-    border-radius: 1.1rem;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 16px #38b2ac11;
-}
-.table.commande-admin-table th {
-    background: #e0f7fa;
-    color: #222;
-    font-weight: 700;
-    font-size: 1.03rem;
-    border-top: none;
-    letter-spacing: 0.01em;
-}
-.table.commande-admin-table td {
-    background: #fff;
-    font-size: 0.97rem;
-    vertical-align: middle;
-}
-.table.commande-admin-table tbody tr {
-    transition: background 0.18s;
-}
-.table.commande-admin-table tbody tr:hover {
-    background: #e0f7fa33;
-}
-.badge-statut {
-    font-size: 0.95rem;
-    font-weight: 600;
-    border-radius: 0.8rem;
-    padding: 0.35em 1em;
-    letter-spacing: 0.01em;
-}
-.badge-statut.En_attente { background: #fff3cd; color: #856404; }
-.badge-statut.Validée { background: #d4edda; color: #155724; }
-.badge-statut.Livrée { background: #cce5ff; color: #004085; }
-.badge-statut.Annulée { background: #f8d7da; color: #721c24; }
-@media (max-width: 767px) {
-    .admin-commande-header { font-size: 1.1rem; }
-    .table.commande-admin-table th, .table.commande-admin-table td { font-size: 0.91rem; }
-    .filtre-bar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 0.7rem; }
-    .filtre-bar input[type="text"] { width: 100%; }
+@media (max-width: 600px) {
+    .filtre-bar { flex-direction: column; gap: 0.5rem; padding: 0.7rem 0.5rem; }
+    #search-email.form-control { max-width: 100%; }
 }
 </style>
 <div class="container mt-5 mb-5">
     <h2 class="admin-commande-header">Toutes les commandes des utilisateurs</h2>
     <div class="filtre-bar">
-        <label for="search-email" class="mb-0 fw-semibold text-secondary">
+        <label for="search-email">
             <i class="fa fa-search me-2"></i>Rechercher par email :
         </label>
         <input type="text" id="search-email" class="form-control" placeholder="Tapez un email...">
@@ -93,15 +89,34 @@
                         <th>Date</th>
                         <th>Nombre de plats</th>
                         <th>Prix total</th>
+                        <th>Détails</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for commande in commandes %}
-                    <tr>
+                    <tr class="main-row">
                         <td>{{ commande.utilisateur.email }}</td>
                         <td>{{ commande.date_commande|date:"d/m/Y H:i" }}</td>
                         <td>{{ commande.commandeplat_set.count }}</td>
                         <td>{{ commande.prix_total }} €</td>
+                        <td>
+                            <button class="btn btn-detail" type="button" onclick="toggleDetail(this)">
+                                <i class="fas fa-eye"></i> Voir
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="detail-row" style="display:none;">
+                        <td colspan="5" class="detail-cell">
+                            <div class="detail-title mb-2">Détails de la commande :</div>
+                            <ul class="detail-list">
+                                {% for ligne in commande.commandeplat_set.all %}
+                                    <li>
+                                        <strong>{{ ligne.plat.nom_plat }}</strong>
+                                        (Quantité : {{ ligne.quantite }}, Prix unitaire : {{ ligne.plat.prix }} €)
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -114,11 +129,45 @@
 <script>
 document.getElementById('search-email').addEventListener('input', function() {
     const filter = this.value.toLowerCase();
-    const rows = document.querySelectorAll('#commande-table tbody tr');
+    const rows = document.querySelectorAll('#commande-table tbody tr.main-row');
     rows.forEach(row => {
         const email = row.children[0].textContent.toLowerCase();
-        row.style.display = email.includes(filter) ? '' : 'none';
+        const detailRow = row.nextElementSibling;
+        if (email.includes(filter)) {
+            row.style.display = '';
+            if (detailRow && detailRow.classList.contains('detail-row')) {
+                detailRow.style.display = 'none';
+                // Désactive le bouton si filtré
+                const btn = row.querySelector('.btn-detail');
+                if (btn) btn.classList.remove('active');
+            }
+        } else {
+            row.style.display = 'none';
+            if (detailRow && detailRow.classList.contains('detail-row')) {
+                detailRow.style.display = 'none';
+                const btn = row.querySelector('.btn-detail');
+                if (btn) btn.classList.remove('active');
+            }
+        }
     });
 });
+
+// Affichage/masquage des détails
+function toggleDetail(btn) {
+    const mainRow = btn.closest('tr');
+    const detailRow = mainRow.nextElementSibling;
+    const isOpen = detailRow.style.display === '' || detailRow.style.display === 'table-row';
+    // Ferme tous les autres détails ouverts et retire la classe active des autres boutons
+    document.querySelectorAll('.detail-row').forEach(row => row.style.display = 'none');
+    document.querySelectorAll('.btn-detail').forEach(b => b.classList.remove('active'));
+    // Si déjà ouvert, referme, sinon ouvre
+    if (!isOpen) {
+        detailRow.style.display = '';
+        btn.classList.add('active');
+    } else {
+        detailRow.style.display = 'none';
+        btn.classList.remove('active');
+    }
+}
 </script>
 {% endblock %}

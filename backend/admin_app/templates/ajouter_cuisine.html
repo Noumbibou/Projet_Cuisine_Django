@@ -1,27 +1,96 @@
 {% extends 'base/dashboard.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2 class="mb-4 text-center">Ajouter un plat</h2>
-    <form method="post">
-        {% csrf_token %}
-        {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
+<style>
+.cuisine-add-container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cuisine-add-card {
+    max-width: 420px;
+    width: 100%;
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 32px rgba(44, 62, 80, 0.13);
+    border: none;
+    background: #fff;
+    padding: 2.5rem 2rem 2rem 2rem;
+}
+.cuisine-add-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #38b2ac;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.cuisine-add-card label {
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 0.4rem;
+}
+.cuisine-add-card input[type="text"] {
+    border-radius: 0.8rem;
+    font-size: 1rem;
+    border: 1.2px solid #e2e8f0;
+    box-shadow: 0 2px 8px #38b2ac11;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.7rem;
+    transition: border-color 0.2s;
+}
+.cuisine-add-card input:focus {
+    border-color: #38b2ac;
+    box-shadow: 0 0 0 2px #38b2ac33;
+}
+.cuisine-add-card .btn-success {
+    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    border: none;
+    font-weight: 600;
+    border-radius: 0.8rem;
+    padding: 0.55rem 1.6rem;
+    font-size: 1.07rem;
+    box-shadow: 0 2px 8px #38b2ac22;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.cuisine-add-card .btn-success:hover {
+    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+    box-shadow: 0 4px 24px #38b2ac33;
+}
+.alert {
+    font-size: 0.98rem;
+    border-radius: 0.7rem;
+    margin-bottom: 1rem;
+}
+@media (max-width: 600px) {
+    .cuisine-add-card { padding: 1.2rem 0.5rem; }
+    .cuisine-add-title { font-size: 1.1rem; }
+}
+</style>
+<div class="cuisine-add-container">
+    <div class="cuisine-add-card">
+        <h2 class="cuisine-add-title">Ajouter une cuisine</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <div class="mb-3">
+                <label for="nom_cuisine" class="form-label">Nom de la cuisine</label>
+                <input type="text" class="form-control" id="nom_cuisine" name="nom_cuisine" required>
             </div>
-        {% endfor %}
-        {% endif %}
-        <div class="mb-3">
-            <label for="nom_plat" class="form-label">Nom de la cuisine</label>
-            <input type="text" class="form-control" id="nom_plat" name="nom_cuisine" required>
-        </div>
-        <div class="mb-3">
-            <label for="temp_preparation" class="form-label">Description</label>
-            <input type="text" class="form-control" id="temp_preparation" name="description" required>
-        </div>
-       
-        <button type="submit" class="btn btn-success">Ajouter</button>
-    </form>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="description" name="description" required>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success">Ajouter</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}
