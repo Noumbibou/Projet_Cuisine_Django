@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 27 mai 2025 à 14:25
+-- Généré le : mar. 27 mai 2025 à 15:41
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `base_commande` (
   `utilisateur_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `base_commande_utilisateur_id_b002a652` (`utilisateur_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `base_commande`
@@ -150,7 +150,10 @@ CREATE TABLE IF NOT EXISTS `base_commande` (
 
 INSERT INTO `base_commande` (`id`, `date_commande`, `prix_total`, `statut`, `utilisateur_id`) VALUES
 (1, '2025-05-26 15:23:26.808771', 145.00, 'en_attente', 2),
-(2, '2025-05-27 09:32:23.110588', 119.00, 'en_attente', 2);
+(2, '2025-05-27 09:32:23.110588', 119.00, 'en_attente', 2),
+(3, '2025-05-27 15:14:08.600560', 59.00, 'en_attente', 3),
+(4, '2025-05-27 15:15:48.310843', 206.00, 'en_attente', 3),
+(5, '2025-05-27 15:21:17.067073', 4.00, 'en_attente', 2);
 
 -- --------------------------------------------------------
 
@@ -181,7 +184,14 @@ INSERT INTO `base_commandeplat` (`id`, `quantite`, `commande_id`, `plat_id`, `im
 (2, 1, 1, 5, 'plats/couscous.jpg', 'couscous', 55.00),
 (3, 2, 2, 2, 'plats/Croissants.jpg', 'croissant', 2.00),
 (4, 1, 2, 3, 'plats/pizza.jpg', 'pizza', 55.00),
-(5, 3, 2, 6, 'plats/Pastilla_sucrée.jpg', 'pastella', 20.00);
+(5, 3, 2, 6, 'plats/Pastilla_sucrée.jpg', 'pastella', 20.00),
+(6, 3, 3, 10, 'plats/Moroccan_Harira_.jpg', 'harira', 3.00),
+(7, 1, 3, 11, 'plats/Lasagne.jpg', 'lasagne', 20.00),
+(8, 2, 3, 13, 'plats/kaabghzal_u0ZAKKr.jpg', 'kabghzal', 15.00),
+(9, 2, 4, 1, 'plats/tajine.jpg', 'tajine', 45.00),
+(10, 3, 4, 2, 'plats/Croissants.jpg', 'croissant', 2.00),
+(11, 2, 4, 3, 'plats/pizza.jpg', 'pizza', 55.00),
+(12, 2, 5, 2, 'plats/Croissants.jpg', 'croissant', 2.00);
 
 -- --------------------------------------------------------
 
@@ -243,14 +253,15 @@ CREATE TABLE IF NOT EXISTS `base_notification` (
   `utilisateur_id` bigint NOT NULL,
   PRIMARY KEY (`id`),
   KEY `base_notification_utilisateur_id_d04c0275` (`utilisateur_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `base_notification`
 --
 
 INSERT INTO `base_notification` (`id`, `message`, `date_creation`, `lu`, `utilisateur_id`) VALUES
-(1, 'Problème de passer une commande', '2025-05-27 09:50:19.339682', 0, 2);
+(1, 'Problème de passer une commande', '2025-05-27 09:50:19.339682', 0, 2),
+(2, 'Je veux récupérer ma commande ', '2025-05-27 15:17:25.571439', 0, 3);
 
 -- --------------------------------------------------------
 
@@ -336,15 +347,16 @@ CREATE TABLE IF NOT EXISTS `base_utilisateur` (
   `is_superuser` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `base_utilisateur`
 --
 
 INSERT INTO `base_utilisateur` (`id`, `password`, `last_login`, `email`, `nom`, `prenom`, `is_active`, `date_joined`, `is_staff`, `is_superuser`) VALUES
-(1, 'pbkdf2_sha256$1000000$NtgiQcVi0j6dVMFpPAii7g$v72FVsd6IG/hp7LEO3vSYcDnyhX8AdNO5YpY1JJxVEI=', '2025-05-27 12:37:54.350422', 'Chibel55@gmail.com', 'Aliaa', 'Chibel', 1, '2025-05-26 14:50:59.647168', 1, 1),
-(2, 'pbkdf2_sha256$1000000$XaBgsFYeyOklHkJUomolaD$vMaETtJeZgeM4ApqrXfp/2qxCF4o5q7HBYvig7bE05Y=', '2025-05-27 09:49:07.458685', 'fomin@gmail.com', 'fomin', 'william', 1, '2025-05-26 15:22:47.531210', 0, 0);
+(1, 'pbkdf2_sha256$1000000$NtgiQcVi0j6dVMFpPAii7g$v72FVsd6IG/hp7LEO3vSYcDnyhX8AdNO5YpY1JJxVEI=', '2025-05-27 15:22:01.456966', 'Chibel55@gmail.com', 'Aliaa', 'Chibel', 1, '2025-05-26 14:50:59.647168', 1, 1),
+(2, 'pbkdf2_sha256$1000000$XaBgsFYeyOklHkJUomolaD$vMaETtJeZgeM4ApqrXfp/2qxCF4o5q7HBYvig7bE05Y=', '2025-05-27 15:20:05.910751', 'fomin@gmail.com', 'fomin', 'william', 1, '2025-05-26 15:22:47.531210', 0, 0),
+(3, 'pbkdf2_sha256$1000000$c2gEY77HjCA6DWpMGGQtL3$ZIMvyHGgAwdXHwdnS7rLqjnzOvy+uPPuXqeAdsQb9QY=', '2025-05-27 15:13:07.409726', 'fotsoAlex@gmail.com', 'Fotso', 'Alex', 1, '2025-05-27 15:12:52.375151', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -469,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('jwwnb914so8yliri52eopxn8bg90fh95', '.eJxVjDsOwjAQRO_iGlmO_0tJnzNYXnuNA8iR4qRC3J1ESgHdaN6bebMQt7WGrdMSpsyubGCX3w5jelI7QH7Edp95mtu6TMgPhZ-083HO9Lqd7t9Bjb3ua29BQlLSOooWSFrjKYEWZPIeBiEKluyTl6CdlgqcQuM0eh1zURIt-3wBzR83Zg:1uJtZ4:WFp9fAYhf-Qns9dphORyRdTIKnQ7u6VbPOTU0vTIMXI', '2025-06-10 12:37:54.356530');
+('304ocfzbnknjktvge9fzhzq2ueaz2llj', '.eJxVjDsOwjAQRO_iGlmO_0tJnzNYXnuNA8iR4qRC3J1ESgHdaN6bebMQt7WGrdMSpsyubGCX3w5jelI7QH7Edp95mtu6TMgPhZ-083HO9Lqd7t9Bjb3ua29BQlLSOooWSFrjKYEWZPIeBiEKluyTl6CdlgqcQuM0eh1zURIt-3wBzR83Zg:1uJw7t:4iWc4R2x95IcbxRciLAIxsU7PkZbg_XK2Ngkad9MToU', '2025-06-10 15:22:01.459683');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
