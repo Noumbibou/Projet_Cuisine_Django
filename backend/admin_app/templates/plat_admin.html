@@ -2,129 +2,274 @@
 
 {% block content %}
 <style>
-.plat-admin-header {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #38b2ac;
-    letter-spacing: 0.02em;
-}
-.table.plat-admin-table {
-    border-radius: 1.1rem;
-    overflow: hidden;
-    background: #fff;
-    box-shadow: 0 2px 16px #38b2ac11;
-}
-.table.plat-admin-table th {
-    background: #e0f7fa;
-    color: #222;
-    font-weight: 700;
-    font-size: 1.03rem;
-    border-top: none;
-    letter-spacing: 0.01em;
-}
-.table.plat-admin-table td {
-    background: #fff;
-    font-size: 0.97rem;
-    vertical-align: middle;
-}
-.table.plat-admin-table tbody tr {
-    transition: background 0.18s;
-}
-.table.plat-admin-table tbody tr:hover {
-    background: #e0f7fa33;
-}
-.plat-img-thumb {
-    max-width: 70px;
-    max-height: 70px;
-    border-radius: 0.7rem;
-    box-shadow: 0 2px 8px #38b2ac22;
-    object-fit: cover;
-    background: #f8fafc;
-}
-.btn-success {
-    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
-    border: none;
-    font-weight: 600;
-    border-radius: 1.2rem;
-    padding: 0.5rem 1.3rem;
-    box-shadow: 0 2px 8px #38b2ac22;
-    transition: background 0.18s;
-}
-.btn-success:hover {
-    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
-}
-.btn-warning, .btn-danger, .btn-info {
-    border-radius: 1.2rem !important;
-    font-weight: 600;
-    font-size: 0.97rem;
-    padding: 0.35rem 1.1rem;
-}
-.btn-warning {
-    background: #ffe082;
-    color: #856404;
-    border: none;
-}
-.btn-warning:hover {
-    background: #ffd54f;
-    color: #856404;
-}
-.btn-danger {
-    background: #ff5e62;
-    color: #fff;
-    border: none;
-}
-.btn-danger:hover {
-    background: #ff9966;
-    color: #fff;
-}
-.btn-info {
-    background: #4f8cff;
-    color: #fff;
-    border: none;
-}
-.btn-info:hover {
-    background: #38b2ac;
-    color: #fff;
-}
-.plat-search-input {
-    max-width: 320px;
-    border-radius: 1.2rem;
-    border: 1.2px solid #e2e8f0;
-    font-size: 1rem;
-    padding: 0.5rem 1.2rem;
-    box-shadow: 0 2px 8px #38b2ac11;
-    transition: border-color 0.2s;
-}
-.plat-search-input:focus {
-    border-color: #38b2ac;
-    box-shadow: 0 0 0 2px #38b2ac33;
-}
-@media (max-width: 767px) {
-    .plat-admin-header { font-size: 1.1rem; }
-    .table.plat-admin-table th, .table.plat-admin-table td { font-size: 0.91rem; }
-    .btn { font-size: 0.91rem; padding: 0.3rem 0.7rem; }
-    .plat-search-input { max-width: 100%; }
-}
+    /* Variables CSS pour la cohérence des couleurs */
+    :root {
+        --primary-color: #38b2ac;
+        --primary-light: #e0f7fa;
+        --primary-dark: #2c9a94;
+        --secondary-color: #4f8cff;
+        --text-dark: #2d3748;
+        --text-light: #718096;
+        --success-gradient: linear-gradient(135deg, #38b2ac 0%, #4f8cff 100%);
+        --danger-gradient: linear-gradient(135deg, #ff5e62 0%, #ff9966 100%);
+        --warning-gradient: linear-gradient(135deg, #ffe082 0%, #ffd54f 100%);
+        --info-gradient: linear-gradient(135deg, #4f8cff 0%, #38b2ac 100%);
+    }
+
+    /* Styles généraux */
+    .plat-admin-header {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .plat-admin-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: var(--success-gradient);
+        border-radius: 2px;
+    }
+
+    /* Styles de la table */
+    .plat-admin-table {
+        border-radius: 0.8rem;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .plat-admin-table th {
+        background: var(--primary-light);
+        color: var(--text-dark);
+        font-weight: 600;
+        font-size: 0.85rem;
+        padding: 1rem;
+        border: none;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+    }
+
+    .plat-admin-table td {
+        padding: 0.8rem 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+    }
+
+    .plat-admin-table tbody tr {
+        transition: all 0.2s ease;
+    }
+
+    .plat-admin-table tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        background: var(--primary-light);
+    }
+
+    /* Styles des images */
+    .plat-img-thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 0.6rem;
+        object-fit: cover;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .plat-img-thumb:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 12px -1px rgba(0,0,0,0.15);
+    }
+
+    /* Styles des boutons */
+    .btn {
+        font-weight: 500;
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        font-size: 0.8rem;
+    }
+
+    .btn-group {
+        display: flex;
+        gap: 0.4rem;
+    }
+
+    .btn-group .btn {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-group .btn i {
+        font-size: 0.7rem;
+        margin-right: 0.3rem;
+    }
+
+    .btn::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .btn:hover::after {
+        transform: translateX(0);
+    }
+
+    .btn-success {
+        background: var(--success-gradient);
+        border: none;
+        box-shadow: 0 4px 6px -1px rgba(56, 178, 172, 0.2);
+    }
+
+    .btn-warning {
+        background: var(--warning-gradient);
+        color: #856404;
+        border: none;
+    }
+
+    .btn-danger {
+        background: var(--danger-gradient);
+        color: #fff;
+        border: none;
+    }
+
+    .btn-info {
+        background: var(--info-gradient);
+        color: #fff;
+        border: none;
+    }
+
+    /* Style de la barre de recherche */
+    .plat-search-input {
+        border-radius: 0.8rem;
+        border: 1.5px solid #e2e8f0;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        min-width: 280px;
+    }
+
+    .plat-search-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.1);
+        outline: none;
+    }
+
+    /* Badges */
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    /* Alertes stylisées */
+    .alert {
+        border-radius: 0.8rem;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        margin-bottom: 1.2rem;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        animation: fadeIn 0.3s ease;
+        font-size: 0.9rem;
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, #38b2ac 0%, #4f8cff 100%);
+        color: white;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .plat-admin-header {
+            font-size: 1.4rem;
+        }
+
+        .plat-admin-table th,
+        .plat-admin-table td {
+            font-size: 0.85rem;
+            padding: 0.6rem;
+        }
+
+        .btn {
+            padding: 0.35rem 0.7rem;
+            font-size: 0.8rem;
+        }
+
+        .plat-img-thumb {
+            width: 50px;
+            height: 50px;
+        }
+
+        .plat-search-input {
+            width: 100%;
+            min-width: auto;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem;
+        }
+    }
 </style>
-<div class="container mt-5 mb-5">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-        <h2 class="plat-admin-header mb-0">Liste des plats</h2>
-        <input type="text" id="plat-search" class="plat-search-input" placeholder="Rechercher un plat...">
-        <a href="{% url 'admin_app:ajouter_plat' %}" class="btn btn-success">
-            <i class="fas fa-plus"></i> Ajouter plat
-        </a>
+
+<div class="container-fluid px-3 py-3">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2 fade-in">
+        <h2 class="plat-admin-header mb-0">Gestion des Plats</h2>
+        <div class="d-flex gap-2 flex-wrap">
+            <input type="text" id="plat-search" class="plat-search-input" placeholder="Rechercher un plat...">
+            <a href="{% url 'admin_app:ajouter_plat' %}" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i>Nouveau Plat
+            </a>
+        </div>
     </div>
+
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show fade-in">
+                <i class="fas fa-info-circle me-2"></i>
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         {% endfor %}
     {% endif %}
-    <div class="table-responsive">
-        <table class="table table-striped table-hover plat-admin-table align-middle" id="plat-table">
+
+    <div class="table-responsive fade-in">
+        <table class="table plat-admin-table" id="plat-table">
             <thead>
                 <tr>
                     <th class="text-center">Nom</th>
@@ -132,68 +277,112 @@
                     <th class="text-center">Type de Cuisine</th>
                     <th class="text-center">Temps de préparation</th>
                     <th class="text-center">Prix</th>
-                    <th class="text-center">Options</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for plat in plats %}
-                <tr>
-                    <td class="text-center plat-nom">{{ plat.nom_plat }}</td>
+                <tr class="fade-in">
+                    <td class="text-center plat-nom">
+                        <strong>{{ plat.nom_plat }}</strong>
+                    </td>
                     <td class="text-center">
                         {% if plat.image %}
-                            <img src="{{ plat.image.url }}" alt="Image du plat" class="plat-img-thumb">
+                            <img src="{{ plat.image.url }}" alt="{{ plat.nom_plat }}" class="plat-img-thumb">
                         {% else %}
-                            <span class="text-muted">Aucune image</span>
+                            <div class="text-muted">
+                                <i class="fas fa-image fa-2x"></i>
+                                <p class="mt-2 mb-0 small">Aucune image</p>
+                            </div>
                         {% endif %}
                     </td>
-                    <td class="text-center">{{ plat.id_cuisine.name }}</td>
-                    <td class="text-center">{{ plat.temp_preparation }} min</td>
-                    <td class="text-center">{{ plat.prix }} €</td>
                     <td class="text-center">
-                        <a href="{% url 'admin_app:plat_update' plat.id %}" class="btn btn-xs btn-warning me-1" style="font-size:0.85rem; padding:0.25rem 0.7rem;">
-                            <i class="fas fa-edit"></i> Modifier
-                        </a>
-                        <a href="{% url 'admin_app:plat_delete' plat.id %}" class="btn btn-xs btn-danger me-1" style="font-size:0.85rem; padding:0.25rem 0.7rem;">
-                            <i class="fas fa-trash"></i> Supprimer
-                        </a>
-                        <a href="{% url 'admin_app:plat_detail' plat.id %}" class="btn btn-xs btn-info" style="font-size:0.85rem; padding:0.25rem 0.7rem;">
-                            <i class="fas fa-eye"></i> Détails
-                        </a>
+                        <span class="badge bg-light text-dark">{{ plat.id_cuisine.name }}</span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-info text-white">
+                            <i class="fas fa-clock me-1"></i>{{ plat.temp_preparation }} min
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <span class="badge bg-success text-white">
+                            {{ plat.prix }} €
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="{% url 'admin_app:plat_update' plat.id %}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i>Modifier
+                            </a>
+                            <a href="{% url 'admin_app:plat_delete' plat.id %}" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>Supprimer
+                            </a>
+                            <a href="{% url 'admin_app:plat_detail' plat.id %}" class="btn btn-info">
+                                <i class="fas fa-eye"></i>Détails
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center">Aucun plat trouvé.</td>
+                    <td colspan="6" class="text-center py-4">
+                        <div class="text-muted">
+                            <i class="fas fa-utensils fa-2x mb-2"></i>
+                            <p class="mb-0 small">Aucun plat trouvé</p>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('plat-search');
     const table = document.getElementById('plat-table');
     const rows = table.querySelectorAll('tbody tr');
+
+    // Animation de recherche
     searchInput.addEventListener('input', function() {
         const filter = this.value.trim().toLowerCase();
         let visibleRows = 0;
-        rows.forEach(row => {
+
+        rows.forEach((row, index) => {
             const nomCell = row.querySelector('.plat-nom');
             if (!nomCell) return;
+
             const nom = nomCell.textContent.trim().toLowerCase();
             if (nom.includes(filter)) {
                 row.style.display = '';
+                row.style.animation = `fadeIn 0.3s ease forwards ${index * 0.1}s`;
                 visibleRows++;
             } else {
                 row.style.display = 'none';
             }
         });
-        // Gérer le message "Aucun plat trouvé"
+
+        // Gestion du message "Aucun plat trouvé"
         const emptyRow = table.querySelector('tbody tr td[colspan]');
         if (emptyRow) {
             emptyRow.parentElement.style.display = (visibleRows === 0) ? '' : 'none';
         }
+    });
+
+    // Animation des boutons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+        btn.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Animation initiale des lignes
+    rows.forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.1}s`;
     });
 });
 </script>

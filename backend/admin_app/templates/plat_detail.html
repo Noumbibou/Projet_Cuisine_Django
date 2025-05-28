@@ -9,61 +9,136 @@
         justify-content: center;
         align-items: center;
         min-height: 70vh;
+        padding: 20px;
     }
+
     .plat-detail-card {
         max-width: 480px;
         width: 100%;
-        border-radius: 1.5rem;
-        box-shadow: 0 6px 32px rgba(44, 62, 80, 0.13);
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(44, 62, 80, 0.15);
         border: none;
         overflow: hidden;
         background: #fff;
         padding-bottom: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
+    .plat-detail-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(44, 62, 80, 0.2);
+    }
+
     .plat-detail-card .card-img-top {
-        border-radius: 1.5rem 1.5rem 0 0;
+        border-radius: 24px 24px 0 0;
         object-fit: cover;
-        max-height: 260px;
-        min-height: 180px;
+        max-height: 300px;
+        min-height: 200px;
         background: #e2e8f0;
+        transition: transform 0.5s ease;
     }
+
+    .plat-detail-card:hover .card-img-top {
+        transform: scale(1.02);
+    }
+
     .plat-detail-card .card-body {
-        padding: 2rem 2rem 1.2rem 2rem;
+        padding: 2.5rem 2.5rem 1.5rem 2.5rem;
+        position: relative;
     }
+
     .plat-detail-card .card-title {
         font-family: 'Playfair Display', serif;
         font-weight: 700;
-        font-size: 2rem;
-        color: #2d3748;
-        margin-bottom: 0.7rem;
+        font-size: 2.2rem;
+        color: #1a202c;
+        margin-bottom: 1rem;
         text-align: center;
+        position: relative;
+        padding-bottom: 15px;
     }
+
+    .plat-detail-card .card-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+        border-radius: 2px;
+    }
+
     .plat-detail-card .card-text {
-        font-size: 1.08rem;
+        font-size: 1.1rem;
+        line-height: 1.7;
         color: #4a5568;
-        margin-bottom: 0.6rem;
+        margin-bottom: 1.5rem;
+        text-align: justify;
     }
-    .plat-detail-card .badge-cuisine {
+
+    .badge-cuisine {
         background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
         color: #fff;
-        font-size: 1em;
-        border-radius: 0.7rem;
-        padding: 0.4em 1.1em;
+        font-size: 1.1em;
+        border-radius: 12px;
+        padding: 0.5em 1.2em;
         font-weight: 600;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
         display: inline-block;
-        box-shadow: 0 2px 8px #38b2ac22;
+        box-shadow: 0 4px 15px rgba(56, 178, 172, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .plat-detail-card .prix {
-        font-size: 1.25rem;
-        font-weight: 700;
+
+    .badge-cuisine:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(56, 178, 172, 0.3);
+    }
+
+    .info-container {
+        background: #f8fafc;
+        border-radius: 16px;
+        padding: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .prix, .temps {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .prix i, .temps i {
         color: #38b2ac;
-        margin-bottom: 0.7rem;
+        font-size: 1.3rem;
     }
-    .plat-detail-card .temps {
-        font-size: 1.05rem;
-        color: #4f8cff;
-        margin-bottom: 0.7rem;
+
+    .prix strong, .temps strong {
+        color: #4a5568;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .plat-detail-container {
+            padding: 15px;
+        }
+
+        .plat-detail-card .card-body {
+            padding: 2rem 1.5rem 1.2rem 1.5rem;
+        }
+
+        .plat-detail-card .card-title {
+            font-size: 1.8rem;
+        }
+
+        .plat-detail-card .card-text {
+            font-size: 1rem;
+        }
     }
 </style>
 
@@ -74,9 +149,17 @@
         {% endif %}
         <div class="card-body">
             <h3 class="card-title">{{ plat.nom_plat }}</h3>
-            <div class="badge-cuisine mb-3"> {{ plat.id_cuisine.name }}</div>
-            <div class="prix mb-2"><strong>Prix: </strong>{{ plat.prix }} <i class="fas fa-euro-sign"></i></div>
-            <div class="temps mb-3"><strong>Temps de préparation: </strong><i class="far fa-clock"></i> {{ plat.temp_preparation }} min</div>
+            <div class="badge-cuisine">{{ plat.id_cuisine.name }}</div>
+            <div class="info-container">
+                <div class="prix">
+                    <i class="fas fa-euro-sign"></i>
+                    <strong>Prix:</strong> {{ plat.prix }}
+                </div>
+                <div class="temps">
+                    <i class="far fa-clock"></i>
+                    <strong>Temps de préparation:</strong> {{ plat.temp_preparation }} min
+                </div>
+            </div>
             {% if plat.description %}
                 <p class="card-text">{{ plat.description }}</p>
             {% endif %}

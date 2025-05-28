@@ -57,6 +57,26 @@
     background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
     box-shadow: 0 4px 24px #38b2ac33;
 }
+.cuisine-add-card .btn-secondary {
+    background: linear-gradient(90deg, #718096 0%, #4a5568 100%);
+    border: none;
+    font-weight: 600;
+    border-radius: 0.8rem;
+    padding: 0.55rem 1.6rem;
+    font-size: 1.07rem;
+    box-shadow: 0 2px 8px rgba(113, 128, 150, 0.22);
+    transition: background 0.2s, box-shadow 0.2s;
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.cuisine-add-card .btn-secondary:hover {
+    background: linear-gradient(90deg, #4a5568 0%, #718096 100%);
+    box-shadow: 0 4px 24px rgba(113, 128, 150, 0.33);
+    color: white;
+}
 .alert {
     font-size: 0.98rem;
     border-radius: 0.7rem;
@@ -87,7 +107,10 @@
                 <label for="description" class="form-label">Description</label>
                 <input type="text" class="form-control" id="description" name="description" required>
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'admin_app:ingredient' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>Retour
+                </a>
                 <button type="submit" class="btn btn-success">Ajouter</button>
             </div>
         </form>
