@@ -1,38 +1,224 @@
 {% extends 'base/dashboard.html' %}
 
 {% block content %}
-<div class="container py-4">
-    <h2 class="mb-4">Notifications</h2>
+<style>
+:root {
+    --primary-color: #38b2ac;
+    --primary-light: #e0f7fa;
+    --primary-dark: #2c9a94;
+    --secondary-color: #4f8cff;
+    --accent-color: #fbbf24;
+    --text-dark: #2d3748;
+    --text-light: #718096;
+    --success-gradient: linear-gradient(135deg, #38b2ac 0%, #4f8cff 100%);
+    --info-gradient: linear-gradient(135deg, #4f8cff 0%, #38b2ac 100%);
+}
+
+.notification-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.notification-header {
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.notification-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.notification-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--success-gradient);
+    border-radius: 2px;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notification-item {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 20px rgba(44, 62, 80, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.notification-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(44, 62, 80, 0.08);
+    border-color: var(--primary-light);
+}
+
+.notification-user {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notification-user i {
+    color: var(--primary-color);
+}
+
+.notification-message {
+    color: var(--text-light);
+    font-size: 0.98rem;
+    line-height: 1.5;
+    margin: 0.5rem 0;
+}
+
+.notification-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.notification-date {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.notification-date i {
+    color: var(--primary-color);
+}
+
+.badge {
+    padding: 0.5em 1em;
+    border-radius: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.badge-lu {
+    background: var(--info-gradient);
+    color: white;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(79, 140, 255, 0.2);
+}
+
+.badge-lu:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 140, 255, 0.3);
+}
+
+.badge-success {
+    background: var(--success-gradient);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(56, 178, 172, 0.2);
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #e0f7fa 0%, #e3f2fd 100%);
+    border: none;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    color: var(--text-dark);
+    box-shadow: 0 4px 20px rgba(44, 62, 80, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.alert-info i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .notification-container {
+        padding: 1rem;
+    }
+    
+    .notification-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .notification-item {
+        padding: 1rem;
+    }
+    
+    .notification-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+</style>
+
+<div class="notification-container">
+    <div class="notification-header">
+        <h2>Notifications</h2>
+    </div>
+    
     {% if notifications %}
-        <ul class="list-group">
+        <ul class="notification-list">
             {% for notification in notifications %}
-                <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-2" data-id="{{ notification.id }}">
-                    <div>
-                        <strong>
-                            {% if notification.utilisateur %}
-                                {{ notification.utilisateur.email }}
-                            {% else %}
-                                Utilisateur inconnu
-                            {% endif %}
-                        </strong>
-                        <br>
-                        <span>{{ notification.message }}</span>
-                    </div>
-                    <small class="text-muted mt-2 mt-md-0">
-                        {{ notification.date_creation|date:"d/m/Y H:i" }}
-                        {% if not notification.lu %}
-                            <span class="badge bg-info text-dark ms-2 badge-lu" style="cursor:pointer;" data-id="{{ notification.id }}">Non lu</span>
+                <li class="notification-item" data-id="{{ notification.id }}">
+                    <div class="notification-user">
+                        <i class="fas fa-user-circle"></i>
+                        {% if notification.utilisateur %}
+                            {{ notification.utilisateur.email }}
                         {% else %}
-                            <span class="badge bg-success text-light ms-2">Lu</span>
+                            Utilisateur inconnu
                         {% endif %}
-                    </small>
+                    </div>
+                    <div class="notification-message">
+                        {{ notification.message }}
+                    </div>
+                    <div class="notification-footer">
+                        <div class="notification-date">
+                            <i class="far fa-clock"></i>
+                            {{ notification.date_creation|date:"d/m/Y H:i" }}
+                        </div>
+                        {% if not notification.lu %}
+                            <span class="badge badge-lu" data-id="{{ notification.id }}">Non lu</span>
+                        {% else %}
+                            <span class="badge badge-success">Lu</span>
+                        {% endif %}
+                    </div>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <div class="alert alert-info">Aucune notification.</div>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            Aucune notification.
+        </div>
     {% endif %}
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.badge-lu').forEach(function(badge) {
@@ -46,8 +232,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }).then(response => response.json()).then(data => {
                 if (data.success) {
                     badge.textContent = 'Lu';
-                    badge.classList.remove('bg-info', 'text-dark');
-                    badge.classList.add('bg-success', 'text-light');
+                    badge.classList.remove('badge-lu');
+                    badge.classList.add('badge-success');
                     badge.style.cursor = 'default';
                     badge.removeAttribute('data-id');
                 }

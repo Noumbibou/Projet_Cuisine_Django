@@ -9,35 +9,76 @@
     color: #38b2ac;
     letter-spacing: 0.02em;
     margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
 }
+
+.commande-header::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #38b2ac, #4f8cff);
+    border-radius: 2px;
+}
+
 .filtre-bar {
     background: #f8fafc;
     border-radius: 1.2rem;
     padding: 1.2rem 1.5rem;
-    box-shadow: 0 2px 12px #38b2ac11;
+    box-shadow: 0 2px 12px rgba(56, 178, 172, 0.1);
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
     gap: 1.2rem;
+    transition: transform 0.2s ease;
 }
+
+.filtre-bar:hover {
+    transform: translateY(-2px);
+}
+
+.filtre-bar label {
+    color: #495057;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filtre-bar label i {
+    color: #38b2ac;
+}
+
 .filtre-bar input[type="date"] {
     border-radius: 0.8rem;
     border: 1.5px solid #e2e8f0;
     font-size: 1rem;
     padding: 0.6rem 1.1rem;
-    box-shadow: 0 1px 4px #38b2ac11;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(56, 178, 172, 0.1);
+    transition: all 0.2s ease;
+    max-width: 220px;
 }
+
 .filtre-bar input[type="date"]:focus {
     border-color: #38b2ac;
-    box-shadow: 0 0 0 2px #38b2ac33;
+    box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.15);
 }
+
 .table.commande-table {
     border-radius: 1.2rem;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 2px 16px #38b2ac11;
+    box-shadow: 0 2px 16px rgba(56, 178, 172, 0.1);
+    transition: transform 0.2s ease;
 }
+
+.table.commande-table:hover {
+    transform: translateY(-2px);
+}
+
 .table.commande-table th {
     background: #e0f7fa;
     color: #222;
@@ -45,54 +86,112 @@
     font-size: 1.05rem;
     border-top: none;
     letter-spacing: 0.01em;
+    padding: 1rem;
 }
+
 .table.commande-table td {
     background: #fff;
     font-size: 0.97rem;
     vertical-align: middle;
+    padding: 1rem;
+    border-bottom: 1px solid #f0f4f8;
 }
+
 .table.commande-table tbody tr {
-    transition: background 0.18s;
+    transition: all 0.2s ease;
 }
+
 .table.commande-table tbody tr:hover {
-    background: #e0f7fa33;
+    background: rgba(224, 247, 250, 0.2);
 }
+
 .btn-info.btn-sm {
     background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
     color: #fff;
     border: none;
     font-weight: 600;
-    border-radius: 1rem;
-    padding: 0.3rem 1.1rem;
+    border-radius: 0.8rem;
+    padding: 0.4rem 1.1rem;
     font-size: 0.97rem;
-    box-shadow: 0 2px 8px #38b2ac22;
-    transition: background 0.18s;
+    box-shadow: 0 2px 8px rgba(56, 178, 172, 0.2);
+    transition: all 0.2s ease;
 }
+
 .btn-info.btn-sm:hover {
-    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
-    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(56, 178, 172, 0.3);
 }
+
 .list-group-item {
     border: none;
-    border-radius: 0.7rem;
+    border-radius: 0.8rem;
     background: #f8fafc;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
     font-size: 0.96rem;
-    box-shadow: 0 1px 4px #38b2ac11;
+    box-shadow: 0 1px 4px rgba(56, 178, 172, 0.1);
+    padding: 0.8rem 1rem;
+    transition: all 0.2s ease;
 }
+
+.list-group-item:hover {
+    background: #f0f9ff;
+    transform: translateX(5px);
+}
+
 .plat-img-thumb {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     object-fit: cover;
-    border-radius: 6px;
-    margin-right: 8px;
+    border-radius: 0.6rem;
+    margin-right: 10px;
     border: 1px solid #e2e8f0;
-    background: #f8fafc;
+    background: #fff;
+    transition: all 0.2s ease;
 }
+
+.plat-img-thumb:hover {
+    transform: scale(1.1);
+}
+
+.alert-info {
+    background: rgba(56, 178, 172, 0.1);
+    border: none;
+    border-radius: 1rem;
+    color: #38b2ac;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(56, 178, 172, 0.1);
+}
+
 @media (max-width: 767px) {
-    .commande-header { font-size: 1.2rem; }
-    .filtre-bar { flex-direction: column; gap: 0.7rem; padding: 0.7rem 0.7rem; }
-    .table.commande-table th, .table.commande-table td { font-size: 0.91rem; }
+    .commande-header { 
+        font-size: 1.5rem; 
+    }
+    .filtre-bar { 
+        flex-direction: column; 
+        gap: 0.8rem; 
+        padding: 1rem; 
+    }
+    .filtre-bar input[type="date"] {
+        max-width: 100%;
+    }
+    .table.commande-table th, 
+    .table.commande-table td { 
+        font-size: 0.91rem; 
+        padding: 0.8rem;
+    }
+    .btn-info.btn-sm {
+        padding: 0.3rem 1rem;
+        font-size: 0.9rem;
+    }
+    .list-group-item {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
+    }
+    .plat-img-thumb {
+        width: 32px;
+        height: 32px;
+    }
 }
 </style>
 
@@ -100,8 +199,8 @@
     <h2 class="commande-header">Mes commandes</h2>
     <!-- Filtre par date -->
     <div class="filtre-bar">
-        <label for="filtre-date" class="mb-0 fw-semibold text-secondary"><i class="fa fa-calendar-alt me-2"></i>Filtrer par date :</label>
-        <input type="date" id="filtre-date" class="form-control" style="max-width:220px;">
+        <label for="filtre-date"><i class="fa fa-calendar-alt"></i>Filtrer par date</label>
+        <input type="date" id="filtre-date" class="form-control">
     </div>
     {% if commandes %}
         <div class="table-responsive">
@@ -150,9 +249,10 @@
             </table>
         </div>
     {% else %}
-        <div class="alert alert-info mt-4">Aucune commande passée pour le moment.</div>
+        <div class="alert alert-info">Aucune commande passée pour le moment.</div>
     {% endif %}
 </div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const filtreDate = document.getElementById('filtre-date');

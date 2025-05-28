@@ -2,115 +2,363 @@
 
 {% block content %}
 <style>
-.plat-add-container {
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.plat-add-card {
-    max-width: 520px;
-    width: 100%;
-    border-radius: 1.5rem;
-    box-shadow: 0 6px 32px rgba(44, 62, 80, 0.13);
-    border: none;
-    background: #fff;
-    padding: 2.5rem 2rem 2rem 2rem;
-}
-.plat-add-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: #38b2ac;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-.plat-add-card label {
-    font-weight: 600;
-    color: #2d3748;
-    margin-bottom: 0.4rem;
-}
-.plat-add-card input[type="text"],
-.plat-add-card input[type="number"],
-.plat-add-card input[type="file"],
-.plat-add-card select {
-    border-radius: 0.8rem;
-    font-size: 1rem;
-    border: 1.2px solid #e2e8f0;
-    box-shadow: 0 2px 8px #38b2ac11;
-    padding: 0.6rem 1rem;
-    margin-bottom: 0.7rem;
-    transition: border-color 0.2s;
-}
-.plat-add-card input:focus,
-.plat-add-card select:focus {
-    border-color: #38b2ac;
-    box-shadow: 0 0 0 2px #38b2ac33;
-}
-.plat-add-card .btn-success {
-    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
-    border: none;
-    font-weight: 600;
-    border-radius: 0.8rem;
-    padding: 0.55rem 1.6rem;
-    font-size: 1.07rem;
-    box-shadow: 0 2px 8px #38b2ac22;
-    transition: background 0.2s, box-shadow 0.2s;
-}
-.plat-add-card .btn-success:hover {
-    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
-    box-shadow: 0 4px 24px #38b2ac33;
-}
-.alert {
-    font-size: 0.98rem;
-    border-radius: 0.7rem;
-    margin-bottom: 1rem;
-}
-@media (max-width: 600px) {
-    .plat-add-card { padding: 1.2rem 0.5rem; }
-    .plat-add-title { font-size: 1.1rem; }
-}
+    :root {
+        --primary-color: #38b2ac;
+        --primary-light: #e0f7fa;
+        --primary-dark: #2c9a94;
+        --secondary-color: #4f8cff;
+        --text-dark: #2d3748;
+        --text-light: #718096;
+        --success-gradient: linear-gradient(135deg, #38b2ac 0%, #4f8cff 100%);
+        --danger-gradient: linear-gradient(135deg, #ff5e62 0%, #ff9966 100%);
+        --warning-gradient: linear-gradient(135deg, #ffe082 0%, #ffd54f 100%);
+        --info-gradient: linear-gradient(135deg, #4f8cff 0%, #38b2ac 100%);
+    }
+
+    .plat-add-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 1rem;
+        background: linear-gradient(135deg, #f8fafc 0%, #e0f7fa 100%);
+    }
+
+    .plat-add-card {
+        max-width: 600px;
+        width: 100%;
+        border-radius: 1.2rem;
+        box-shadow: 0 8px 32px rgba(44, 62, 80, 0.1);
+        border: none;
+        background: #fff;
+        padding: 2.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .plat-add-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--success-gradient);
+    }
+
+    .plat-add-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 1rem;
+    }
+
+    .plat-add-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--success-gradient);
+        border-radius: 2px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-label i {
+        color: var(--primary-color);
+        font-size: 1rem;
+    }
+
+    .form-control, .form-select {
+        border-radius: 0.8rem;
+        font-size: 0.95rem;
+        border: 1.5px solid #e2e8f0;
+        padding: 0.7rem 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8fafc;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.1);
+        background-color: #fff;
+    }
+
+    .form-control::placeholder {
+        color: #a0aec0;
+    }
+
+    .form-select {
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2338b2ac' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 16px 12px;
+        appearance: none;
+    }
+
+    .btn-success {
+        background: var(--success-gradient);
+        border: none;
+        font-weight: 600;
+        border-radius: 0.8rem;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(56, 178, 172, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #718096 0%, #4a5568 100%);
+        border: none;
+        font-weight: 600;
+        border-radius: 0.8rem;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        box-shadow: 0 4px 6px rgba(113, 128, 150, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        color: white;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(113, 128, 150, 0.3);
+        color: white;
+    }
+
+    .btn-secondary::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .btn-secondary:hover::after {
+        transform: translateX(0);
+    }
+
+    .alert {
+        border-radius: 0.8rem;
+        border: none;
+        padding: 1rem 1.2rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        animation: slideIn 0.3s ease;
+    }
+
+    .alert i {
+        font-size: 1.2rem;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .file-input-wrapper input[type="file"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-input-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1rem;
+        background: #f8fafc;
+        border: 1.5px dashed #e2e8f0;
+        border-radius: 0.8rem;
+        color: var(--text-light);
+        transition: all 0.3s ease;
+    }
+
+    .file-input-wrapper:hover .file-input-trigger {
+        background: #f1f5f9;
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .plat-add-container {
+            padding: 1rem;
+        }
+
+        .plat-add-card {
+            padding: 1.5rem;
+        }
+
+        .plat-add-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control, .form-select {
+            font-size: 0.9rem;
+            padding: 0.6rem 0.8rem;
+        }
+
+        .btn-success {
+            padding: 0.7rem 1.5rem;
+            font-size: 0.95rem;
+        }
+    }
 </style>
+
 <div class="plat-add-container">
     <div class="plat-add-card">
-        <h2 class="plat-add-title">Ajouter un plat</h2>
+        <h2 class="plat-add-title">Ajouter un Nouveau Plat</h2>
+        
         <form method="post" enctype="multipart/form-data">
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert alert-{{ message.tags }}">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %}"></i>
                         {{ message }}
                     </div>
                 {% endfor %}
             {% endif %}
+            
             {% csrf_token %}
-            <div class="mb-3">
-                <label for="nom_plat" class="form-label">Nom du plat</label>
-                <input type="text" class="form-control" id="nom_plat" name="nom_plat" required>
+            
+            <div class="mb-4">
+                <label for="nom_plat" class="form-label">
+                    <i class="fas fa-utensils"></i>
+                    Nom du plat
+                </label>
+                <input type="text" class="form-control" id="nom_plat" name="nom_plat" 
+                       placeholder="Entrez le nom du plat" required>
             </div>
-            <div class="mb-3">
-                <label for="temp_preparation" class="form-label">Temps de préparation (min)</label>
-                <input type="number" class="form-control" id="temp_preparation" name="temp_preparation" placeholder="temps préparation en minutes" required>
+
+            <div class="mb-4">
+                <label for="temp_preparation" class="form-label">
+                    <i class="fas fa-clock"></i>
+                    Temps de préparation
+                </label>
+                <input type="number" class="form-control" id="temp_preparation" name="temp_preparation" 
+                       placeholder="Temps en minutes" required>
             </div>
-            <div class="mb-3">
-                <label for="prix" class="form-label">Prix (€)</label>
-                <input type="number" step="0.01" class="form-control" id="prix" name="prix" required>
+
+            <div class="mb-4">
+                <label for="prix" class="form-label">
+                    <i class="fas fa-euro-sign"></i>
+                    Prix
+                </label>
+                <input type="number" step="0.01" class="form-control" id="prix" name="prix" 
+                       placeholder="Prix en euros" required>
             </div>
-            <div class="mb-3">
-                <label for="id_cuisine" class="form-label">Cuisine</label>
+
+            <div class="mb-4">
+                <label for="id_cuisine" class="form-label">
+                    <i class="fas fa-globe"></i>
+                    Type de Cuisine
+                </label>
                 <select class="form-select" id="id_cuisine" name="id_cuisine" required>
+                    <option value="" disabled selected>Sélectionnez un type de cuisine</option>
                     {% for cuisine in cuisines %}
                         <option value="{{ cuisine.id }}">{{ cuisine.name }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Image du plat</label>
-                <input type="file" class="form-control" id="image" name="image">
+
+            <div class="mb-4">
+                <label for="image" class="form-label">
+                    <i class="fas fa-image"></i>
+                    Image du plat
+                </label>
+                <div class="file-input-wrapper">
+                    <div class="file-input-trigger">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Choisir une image</span>
+                    </div>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                </div>
             </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-success">Ajouter</button>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'admin_app:plat' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>Retour
+                </a>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-plus me-2"></i>
+                    Ajouter le plat
+                </button>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animation du bouton
+    const submitBtn = document.querySelector('.btn-success');
+    submitBtn.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-2px)';
+    });
+    submitBtn.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(0)';
+    });
+
+    // Gestion de l'affichage du nom du fichier
+    const fileInput = document.querySelector('input[type="file"]');
+    const fileTrigger = document.querySelector('.file-input-trigger span');
+    
+    fileInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            fileTrigger.textContent = this.files[0].name;
+        } else {
+            fileTrigger.textContent = 'Choisir une image';
+        }
+    });
+});
+</script>
 {% endblock %}

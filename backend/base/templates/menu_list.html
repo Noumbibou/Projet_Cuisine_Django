@@ -2,19 +2,48 @@
 
 {% block content %}
 <style>
+:root {
+    --primary-color: #38b2ac;
+    --primary-light: #e0f7fa;
+    --primary-dark: #2c9a94;
+    --secondary-color: #4f8cff;
+    --accent-color: #fbbf24;
+    --text-dark: #2d3748;
+    --text-light: #718096;
+    --success-gradient: linear-gradient(135deg, #38b2ac 0%, #4f8cff 100%);
+    --danger-gradient: linear-gradient(135deg, #ff5e62 0%, #ff9966 100%);
+    --warning-gradient: linear-gradient(135deg, #ffe082 0%, #ffd54f 100%);
+    --info-gradient: linear-gradient(135deg, #4f8cff 0%, #38b2ac 100%);
+}
+
 body {
     background: linear-gradient(120deg, #f8fafc 60%, #e0f7fa 100%);
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    color: #222;
+    color: var(--text-dark);
     font-size: 0.97rem;
 }
+
 h2 {
     font-family: 'Playfair Display', serif;
     font-weight: 700;
     letter-spacing: 0.03em;
-    color: #2d3748;
+    color: var(--text-dark);
     font-size: 1.7rem;
+    position: relative;
+    display: inline-block;
 }
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: var(--success-gradient);
+    border-radius: 2px;
+}
+
 .menu-header {
     display: flex;
     align-items: center;
@@ -22,53 +51,98 @@ h2 {
     flex-wrap: wrap;
     margin-bottom: 2.5rem;
     gap: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(44, 62, 80, 0.05);
 }
+
 .menu-header .filter-select {
     min-width: 180px;
 }
+
 #cuisine-select {
     border-radius: 1.2rem;
     border: 1.2px solid #e2e8f0;
     font-size: 0.98rem;
     background: #fff;
-    transition: border-color 0.2s;
+    transition: all 0.3s ease;
     box-shadow: 0 2px 8px #38b2ac11;
     padding: 0.5rem 1rem;
+    cursor: pointer;
 }
+
 #cuisine-select:focus {
-    border-color: #38b2ac;
-    box-shadow: 0 0 0 2px #38b2ac33;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(56, 178, 172, 0.1);
+    transform: translateY(-1px);
 }
+
 #panier-form .btn-primary {
-    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%);
+    background: var(--success-gradient);
     border: none;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(72, 187, 255, 0.08);
     position: relative;
-    transition: background 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
     border-radius: 2rem;
     padding: 0.5rem 1.2rem 0.5rem 1.7rem;
     font-size: 0.98rem;
+    overflow: visible;
 }
+
+#panier-form .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
 #panier-form .btn-primary:hover {
-    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%);
+    transform: translateY(-2px);
     box-shadow: 0 4px 24px #38b2ac33;
 }
+
+#panier-form .btn-primary:hover::after {
+    transform: translateX(0);
+}
+
 #panier-count {
-    animation: badge-pop 0.3s;
-    font-size: 0.95em;
-    padding: 0.3em 0.6em;
-    border: 2px solid #fff;
-    box-shadow: 0 2px 8px #38b2ac44;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
 }
+
 @keyframes badge-pop {
-    0% { transform: scale(0.7);}
-    70% { transform: scale(1.2);}
-    100% { transform: scale(1);}
+    0% { transform: scale(0.7); }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
+
 #plats-gallery {
     margin-top: 2rem;
 }
+
 .plat-card {
     max-width: 340px;
     border: none;
@@ -79,32 +153,39 @@ h2 {
     margin-right: auto;
     margin-bottom: 1.2rem;
     overflow: hidden;
-    transition: transform 0.18s, box-shadow 0.18s;
+    transition: all 0.3s ease;
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
+
 .plat-card:hover {
     transform: translateY(-6px) scale(1.025);
     box-shadow: 0 8px 32px rgba(56, 178, 172, 0.13);
 }
+
 .plat-card .card-img-top {
     border-radius: 1.5rem 1.5rem 0 0;
     object-fit: cover;
     height: 180px;
     width: 100%;
     background: #e2e8f0;
-    transition: filter 0.3s;
+    transition: all 0.3s ease;
 }
+
 .plat-card:hover .card-img-top {
     filter: brightness(0.93) saturate(1.2);
+    transform: scale(1.05);
 }
+
 .plat-card .badge {
     font-size: 1em;
     border-radius: 12px;
     box-shadow: 0 2px 8px #00000011;
+    transition: all 0.3s ease;
 }
+
 .plat-card .plat-checkbox {
     position: absolute;
     top: 18px;
@@ -112,35 +193,50 @@ h2 {
     z-index: 3;
     width: 1.1em;
     height: 1.1em;
-    accent-color: #0d6efd;
+    accent-color: var(--primary-color);
     border-radius: 0.4em;
-    border: 2px solid #38b2ac;
+    border: 2px solid var(--primary-color);
     background: #fff;
     box-shadow: 0 1px 4px #38b2ac22;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
+
 .plat-card .plat-checkbox:checked {
     box-shadow: 0 0 0 3px #38b2ac44;
+    transform: scale(1.1);
 }
+
 .plat-card .card-body {
     padding: 1.1rem 1rem 0.9rem 1rem;
 }
+
 .plat-card .card-title {
     font-size: 1.08rem;
     font-weight: 700;
-    color: #2d3748;
+    color: var(--text-dark);
     margin-bottom: 0;
     letter-spacing: 0.01em;
+    transition: color 0.3s ease;
 }
+
+.plat-card:hover .card-title {
+    color: var(--primary-color);
+}
+
 .plat-card .card-text {
-    color: #718096;
+    color: var(--text-light);
     font-size: 0.93rem;
     margin-bottom: 0.5rem;
 }
+
 .plat-card .plat-desc {
     font-size: 0.98em;
     color: #6c757d;
     margin-bottom: 0.7rem;
+    line-height: 1.5;
 }
+
 .plat-card .plat-infos {
     display: flex;
     align-items: center;
@@ -148,18 +244,27 @@ h2 {
     margin-bottom: 0.7rem;
     flex-wrap: wrap;
 }
+
 .plat-card .plat-infos .badge {
     background: #f8fafc;
-    color: #222;
+    color: var(--text-dark);
     border: 1px solid #e2e8f0;
     font-weight: 500;
+    transition: all 0.3s ease;
 }
+
+.plat-card .plat-infos .badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.1);
+}
+
 .plat-card .plat-commande-row {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-top: 0.7rem;
 }
+
 .plat-card .plat-quantite {
     width: 55px;
     border-radius: 0.7em;
@@ -168,45 +273,114 @@ h2 {
     font-weight: 500;
     font-size: 0.97rem;
     background: #f8fafc;
+    transition: all 0.3s ease;
 }
+
 .plat-card .plat-quantite:focus {
-    border-color: #38b2ac;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 2px #38b2ac33;
+    transform: translateY(-1px);
 }
-/* Modification du bouton Commander pour reprendre le dégradé du navbar */
+
 .plat-card .btn-dark {
     border-radius: 0.8rem;
     font-weight: 600;
     font-size: 0.98rem;
     padding: 0.45rem 1.2rem;
-    background: linear-gradient(90deg, #38b2ac 0%, #4f8cff 100%) !important;
+    background: var(--success-gradient) !important;
     border: none !important;
     color: #fff !important;
     box-shadow: 0 2px 8px rgba(56, 178, 172, 0.08);
-    transition: background 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
+
+.plat-card .btn-dark::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
 .plat-card .btn-dark:hover {
-    background: linear-gradient(90deg, #4f8cff 0%, #38b2ac 100%) !important;
+    transform: translateY(-2px);
     box-shadow: 0 4px 24px #38b2ac33;
-    color: #fff !important;
 }
+
+.plat-card .btn-dark:hover::after {
+    transform: translateX(0);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.plat-item {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+.plat-item:nth-child(1) { animation-delay: 0.1s; }
+.plat-item:nth-child(2) { animation-delay: 0.2s; }
+.plat-item:nth-child(3) { animation-delay: 0.3s; }
+.plat-item:nth-child(4) { animation-delay: 0.4s; }
+.plat-item:nth-child(5) { animation-delay: 0.5s; }
+.plat-item:nth-child(6) { animation-delay: 0.6s; }
+
+/* Responsive Design */
 @media (max-width: 991px) {
     .plat-card .card-img-top { height: 120px; }
     .plat-card { max-width: 98vw; }
+    .menu-header {
+        padding: 0.8rem;
+    }
 }
+
 @media (max-width: 767px) {
-    h2 { font-size: 1.1rem; }
+    h2 { 
+        font-size: 1.1rem;
+        text-align: center;
+    }
+    h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
     .plat-card .card-img-top { height: 80px; }
     .plat-card .card-body { padding: 0.7rem 0.5rem 0.7rem 0.5rem; }
     .plat-card { margin-bottom: 0.5rem; }
-    .menu-header { flex-direction: column; gap: 1rem; }
-    #panier-form .btn-primary { font-size: 0.93rem; padding: 0.4rem 0.8rem 0.4rem 1.1rem; }
+    .menu-header { 
+        flex-direction: column; 
+        gap: 1rem;
+        text-align: center;
+    }
+    #panier-form .btn-primary { 
+        font-size: 0.93rem; 
+        padding: 0.4rem 0.8rem 0.4rem 1.1rem;
+        width: 100%;
+    }
+    .plat-card .btn-dark {
+        width: 100%;
+    }
 }
 </style>
 
 <div class="container mt-5">
-    <div class="menu-header mb-4">
-        <div class="filter-select">
+    <div class="menu-header mb-4" data-aos="fade-down">
+        <div class="filter-select" data-aos="fade-right" data-aos-delay="100">
             <select id="cuisine-select" class="form-select shadow-sm">
                 <option value="all">Toutes les cuisines</option>
                 {% for cuisine in cuisines %}
@@ -214,12 +388,12 @@ h2 {
                 {% endfor %}
             </select>
         </div>
-        <h2 class="mb-0 text-center flex-grow-1">Découvrez nos Plats</h2>
-        <!-- Bouton Panier en haut à droite -->
-        <form id="panier-form" method="post" action="{% url 'base:valider_panier' %}" class="ms-3">
+        <h2 class="mb-0 text-center flex-grow-1" data-aos="fade-up" data-aos-delay="200">Découvrez nos Plats</h2>
+        <form id="panier-form" method="post" action="{% url 'base:valider_panier' %}" class="ms-3" data-aos="fade-left" data-aos-delay="300">
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
+                    <div class="alert alert-{{ message.tags }}" data-aos="fade-down">
+                        <i class="fas fa-{% if message.tags == 'success' %}check-circle{% else %}exclamation-circle{% endif %} me-2"></i>
                         {{ message }}
                     </div>
                 {% endfor %}
@@ -228,7 +402,7 @@ h2 {
             <button type="submit" class="btn btn-primary position-relative shadow">
                 <i class="fas fa-shopping-cart"></i> 
                 <span class="ms-2">Valider le panier</span>
-                <span id="panier-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger shadow" style="display:none;">0</span>
+                <span id="panier-count">0</span>
             </button>
             <input type="hidden" name="plats_selectionnes" id="plats_selectionnes">
             <input type="hidden" name="quantites_selectionnees" id="quantites_selectionnees">
@@ -236,9 +410,8 @@ h2 {
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="plats-gallery">
         {% for plat in plats %}
-        <div class="col plat-item cuisine-{{ plat.id_cuisine.id }}">
+        <div class="col plat-item cuisine-{{ plat.id_cuisine.id }}" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
             <div class="card plat-card shadow rounded-4 position-relative">
-                <!-- Checkbox en haut à gauche -->
                 <input type="checkbox" class="plat-checkbox" data-plat="{{ plat.id }}">
                 <div class="position-relative">
                     {% if plat.image %}
@@ -263,25 +436,33 @@ h2 {
                         {% endif %}
                     </p>
                     <div class="plat-infos mb-3">
-                        <span class="text-muted small d-flex align-items-center"><i class="far fa-clock me-1"></i>{{ plat.temp_preparation }} min</span>
-                        <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">{{ plat.id_cuisine.name }}</span>
+                        <span class="text-muted small d-flex align-items-center">
+                            <i class="far fa-clock me-1"></i>{{ plat.temp_preparation }} min
+                        </span>
+                        <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">
+                            {{ plat.id_cuisine.name }}
+                        </span>
                         {% if plat.is_signature %}
-                            <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">Signature</span>
+                            <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">
+                                <i class="fas fa-award me-1"></i>Signature
+                            </span>
                         {% endif %}
                         {% if plat.is_premium %}
-                            <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">Premium</span>
+                            <span class="badge bg-light text-dark border border-secondary fw-normal ms-1">
+                                <i class="fas fa-crown me-1"></i>Premium
+                            </span>
                         {% endif %}
                     </div>
                     <div class="plat-commande-row">
                         <form method="post" action="{% url 'base:passer_commande' plat.id %}" class="d-flex align-items-center w-100">
                             {% csrf_token %}
                             <input type="hidden" name="plat_id" value="{{ plat.id }}">
-                            <input type="hidden" name="quantite" value="1" id="form_quantite_{{ plat.id }}">
-                            <button type="submit" class="btn btn-dark w-auto fw-semibold rounded-3 py-2 me-2">
+                            <input type="number" min="1" value="1" name="quantite" 
+                                   id="quantite_{{ plat.id }}" class="form-control plat-quantite" 
+                                   data-plat="{{ plat.id }}">
+                            <button type="submit" class="btn btn-dark w-auto fw-semibold rounded-3 py-2 ms-2">
                                 <i class="fas fa-bolt"></i> Commander
                             </button>
-                            <label for="quantite_{{ plat.id }}" class="me-2 mb-0">Qté :</label>
-                            <input type="number" min="1" value="1" name="quantite_{{ plat.id }}" id="quantite_{{ plat.id }}" class="form-control plat-quantite" data-plat="{{ plat.id }}">
                         </form>
                     </div>
                 </div>
@@ -293,30 +474,29 @@ h2 {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize AOS
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+
     // Filtrage par cuisine avec animation
     const select = document.getElementById('cuisine-select');
     const plats = document.querySelectorAll('.plat-item');
+    
     select.addEventListener('change', function() {
         const value = this.value;
         plats.forEach(plat => {
-            plat.style.transition = 'opacity 0.25s';
+            plat.style.transition = 'all 0.3s ease';
             if (value === 'all' || plat.classList.contains(value)) {
                 plat.style.opacity = '1';
-                setTimeout(() => { plat.style.display = ''; }, 250);
+                plat.style.transform = 'scale(1)';
+                setTimeout(() => { plat.style.display = ''; }, 300);
             } else {
                 plat.style.opacity = '0';
-                setTimeout(() => { plat.style.display = 'none'; }, 250);
-            }
-        });
-    });
-
-    // Synchronise la quantité du champ quantité avec le formulaire de chaque plat
-    document.querySelectorAll('input[type="number"][name^="quantite_"]').forEach(input => {
-        input.addEventListener('input', function() {
-            const platId = this.id.replace('quantite_', '');
-            const formInput = document.getElementById('form_quantite_' + platId);
-            if (formInput) {
-                formInput.value = this.value;
+                plat.style.transform = 'scale(0.95)';
+                setTimeout(() => { plat.style.display = 'none'; }, 300);
             }
         });
     });
@@ -333,21 +513,29 @@ document.addEventListener('DOMContentLoaded', function() {
         let platsSelectionnes = [];
         let quantitesSelectionnees = [];
         let count = 0;
+        
         checkboxes.forEach(checkbox => {
             if (checkbox.checked) {
-                platsSelectionnes.push(checkbox.getAttribute('data-plat'));
-                const qteInput = document.querySelector('.plat-quantite[data-plat="' + checkbox.getAttribute('data-plat') + '"]');
+                const platId = checkbox.getAttribute('data-plat');
+                platsSelectionnes.push(platId);
+                const qteInput = document.querySelector(`#quantite_${platId}`);
                 quantitesSelectionnees.push(qteInput ? qteInput.value : "1");
                 count++;
             }
         });
+        
         platsSelectionnesInput.value = platsSelectionnes.join(',');
         quantitesSelectionneesInput.value = quantitesSelectionnees.join(',');
-        panierCount.textContent = count;
-        panierCount.style.display = count > 0 ? 'inline-block' : 'none';
-        panierCount.classList.remove('animate__animated', 'animate__bounceIn');
+        
         if (count > 0) {
-            panierCount.classList.add('animate__animated', 'animate__bounceIn');
+            panierCount.textContent = count;
+            panierCount.style.display = 'flex';
+            panierCount.style.opacity = '1';
+            panierCount.style.transform = 'scale(1)';
+        } else {
+            panierCount.style.display = 'none';
+            panierCount.style.opacity = '0';
+            panierCount.style.transform = 'scale(0.8)';
         }
     }
 
@@ -357,7 +545,16 @@ document.addEventListener('DOMContentLoaded', function() {
     panierForm.addEventListener('submit', function(e) {
         if (!platsSelectionnesInput.value) {
             e.preventDefault();
-            alert("Veuillez sélectionner au moins un plat à ajouter au panier.");
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-warning alert-dismissible fade show position-fixed start-50 translate-middle-x';
+            alert.style.cssText = 'z-index: 9999; top: 20px; width: auto; max-width: 90%;';
+            alert.innerHTML = `
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Veuillez sélectionner au moins un plat à ajouter au panier.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alert);
+            setTimeout(() => alert.remove(), 3000);
         }
     });
 });

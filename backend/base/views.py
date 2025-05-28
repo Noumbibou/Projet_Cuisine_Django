@@ -1,5 +1,5 @@
 from django.views import View
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .forms import InscriptionForm
 from django.contrib import messages
@@ -176,15 +176,34 @@ class Contact(View):
         message = request.POST.get('message')
         success = False
         error = None
-        if email and message:
-            Notification.objects.create(
-                utilisateur=request.user if request.user.is_authenticated else None,
-                message=message,
-                lu=False,
-            )
-            success = True
-        else:
+
+        if not email or not message:
             error = "Veuillez remplir tous les champs."
+        elif request.user.is_authenticated and email != request.user.email:
+            error = "L'email saisi ne correspond pas à votre email de connexion."
+        else:
+            if request.user.is_authenticated:
+                Notification.objects.create(
+                    utilisateur=request.user,
+                    message=message,
+                    lu=False,
+                )
+            else:
+                # Si l'utilisateur n'est pas connecté, on accepte n'importe quel email
+                Notification.objects.create(
+                    utilisateur=None,
+                    message=f"Message de {email}: {message}",
+                    lu=False,
+                )
+            messages.success(request, "Votre message a été envoyé avec succès !")
+            success = True
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': success,
+                'error': error
+            })
+        
         return render(request, 'contact.html', {
             'success': success,
             'error': error,
