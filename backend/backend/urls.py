@@ -16,11 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib import admin
-from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import redirect
+
+# Vue pour rediriger la racine vers api/Accueil
+def root_redirect(request):
+    return redirect('base:Accueil')
+
 urlpatterns = [
+    path('', root_redirect, name='root'),  # Redirection racine
     path('admin/', admin.site.urls),
     path('api/', include('base.urls')),
     path('admin_app/', include('admin_app.urls', namespace='admin_app'))

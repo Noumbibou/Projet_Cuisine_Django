@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: cuisine_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: Cuisines_django
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - cuisine_network
+
+  web:
+    image: bidou0204/cuisines-django:latest  # Image depuis Docker Hub
+    container_name: cuisine_web
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=Cuisines_django
+      - DB_USER=root
+      - DB_PASSWORD=root_password
+      - DB_PORT=3306
+    volumes:
+      - ./media:/app/media
+      - ./static:/app/static
+    depends_on:
+      - db
+    networks:
+      - cuisine_network
+
+volumes:
+  mysql_data:
+
+networks:
+  cuisine_network:
+    driver: bridge
