@@ -16,7 +16,7 @@ cd cuisine-django
 # Télécharger le fichier de configuration
 curl -O https://raw.githubusercontent.com/bidou0204/cuisine-django/main/docker-compose-simple.yml
 
-# Créer les dossiers nécessaires
+# Créer les dossiers nécessaires dans le dossier backend
 mkdir media static base_donnees
 
 # Lancer l'application (UNE SEULE COMMANDE)
