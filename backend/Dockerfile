@@ -27,8 +27,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copier le code de l'application
 COPY . .
 
-# Rendre le script d'entrée exécutable
-RUN chmod +x docker-entrypoint.sh
+# Rendre le script de démarrage exécutable
+RUN chmod +x start-django.sh
 
 # Créer les répertoires nécessaires
 RUN mkdir -p /app/media /app/static
@@ -36,6 +36,5 @@ RUN mkdir -p /app/media /app/static
 # Exposer le port
 EXPOSE 8000
 
-# Utiliser le script d'entrée
-ENTRYPOINT ["./docker-entrypoint.sh"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Utiliser le script de démarrage
+CMD ["./start-django.sh"]

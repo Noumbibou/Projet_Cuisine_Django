@@ -54,5 +54,6 @@ Dockerfile
 docker-compose.yml
 .dockerignore
 
-# Allow SQL files in base_donnees directory
+# Allow SQL files and scripts
 !base_donnees/*.sql
+!start-django.sh
