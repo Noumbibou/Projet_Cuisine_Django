@@ -349,15 +349,6 @@ CREATE TABLE IF NOT EXISTS `base_utilisateur` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `base_utilisateur`
---
-
-INSERT INTO `base_utilisateur` (`id`, `password`, `last_login`, `email`, `nom`, `prenom`, `is_active`, `date_joined`, `is_staff`, `is_superuser`) VALUES
-(1, 'pbkdf2_sha256$1000000$NtgiQcVi0j6dVMFpPAii7g$v72FVsd6IG/hp7LEO3vSYcDnyhX8AdNO5YpY1JJxVEI=', '2025-05-27 15:22:01.456966', 'Chibel55@gmail.com', 'Aliaa', 'Chibel', 1, '2025-05-26 14:50:59.647168', 1, 1),
-(2, 'pbkdf2_sha256$1000000$XaBgsFYeyOklHkJUomolaD$vMaETtJeZgeM4ApqrXfp/2qxCF4o5q7HBYvig7bE05Y=', '2025-05-27 15:20:05.910751', 'fomin@gmail.com', 'fomin', 'william', 1, '2025-05-26 15:22:47.531210', 0, 0),
-(3, 'pbkdf2_sha256$1000000$c2gEY77HjCA6DWpMGGQtL3$ZIMvyHGgAwdXHwdnS7rLqjnzOvy+uPPuXqeAdsQb9QY=', '2025-05-27 15:13:07.409726', 'fotsoAlex@gmail.com', 'Fotso', 'Alex', 1, '2025-05-27 15:12:52.375151', 0, 0);
-
 -- --------------------------------------------------------
 
 --

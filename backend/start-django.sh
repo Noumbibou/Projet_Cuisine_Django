@@ -8,12 +8,15 @@ echo "Starting Django setup..."
 python manage.py migrate --noinput
 
 echo "Creating superuser..."
+ADMIN_EMAIL="${ADMIN_EMAIL:-admin@example.com}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-change_this_password}"
+
 python manage.py shell << EOF
 from base.models import Utilisateur
-if not Utilisateur.objects.filter(email='admin@example.com').exists():
+if not Utilisateur.objects.filter(email='$ADMIN_EMAIL').exists():
     Utilisateur.objects.create_superuser(
-        email='admin@example.com',
-        password='admin123',
+        email='$ADMIN_EMAIL',
+        password='$ADMIN_PASSWORD',
         nom='Admin',
         prenom='Super'
     )

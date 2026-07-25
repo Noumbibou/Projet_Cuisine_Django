@@ -30,6 +30,9 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root_password
       - DB_PORT=3306
+      - SECRET_KEY=change-this-to-a-random-secret-key
+      - ADMIN_EMAIL=admin@example.com
+      - ADMIN_PASSWORD=change_this_password_now
     volumes:
       - ./media:/app/media
       - ./static:/app/static
